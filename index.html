@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>こども英単語タイピング</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    }
+
+    :root{
+      --bg1:#f9fbff;
+      --bg2:#fff8ef;
+      --bg3:#f7fff4;
+      --panel:#ffffffdd;
+      --line:#d7e3f5;
+      --text:#20304a;
+      --sub:#5f7191;
+      --accent:#5f8cff;
+      --accent2:#ff9ec7;
+      --accent3:#7ad9a7;
+      --good:#4a90ff;
+      --miss:#ff6f7d;
+      --done:#7f8da8;
+      --key:#eef4ff;
+      --keyActive:#ffe580;
+      --typed:#5f8cff;
+      --shadow:0 8px 24px rgba(84,115,180,0.12);
+    }
+
+    body{
+      background:
+        radial-gradient(circle at 15% 15%, #ffe7f2 0%, transparent 25%),
+        radial-gradient(circle at 85% 20%, #fff3b8 0%, transparent 25%),
+        radial-gradient(circle at 20% 85%, #dfffe7 0%, transparent 28%),
+        radial-gradient(circle at 80% 80%, #dfe9ff 0%, transparent 26%),
+        linear-gradient(180deg, var(--bg1), var(--bg2) 52%, var(--bg3));
+      color: var(--text);
+    }
+
+    .app{
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-rows:
+        auto
+        minmax(0, 1.35fr)
+        auto
+        auto
+        minmax(0, 1.05fr)
+        minmax(0, 0.92fr);
+      gap: 0.8vh;
+      padding: 1.2vh 1.2vw;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:0.9vh 1vw;
+      box-shadow:var(--shadow);
+      min-height: 8vh;
+    }
+
+    .titleWrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 0;
+    }
+
+    .titleBadge{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      background:linear-gradient(135deg,#ffd1e7,#c9dcff,#d7ffd8);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      flex: 0 0 auto;
+    }
+
+    .titleText h1{
+      margin:0;
+      font-size: clamp(20px, 2vw, 30px);
+      line-height:1.1;
+    }
+
+    .titleText p{
+      margin:2px 0 0;
+      font-size: clamp(11px, 0.95vw, 14px);
+      color:var(--sub);
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .controlBox{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      background:#f7faff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:6px 10px;
+      min-height: 44px;
+    }
+
+    .controlBox label{
+      font-size:13px;
+      color:var(--sub);
+      white-space:nowrap;
+    }
+
+    select, button{
+      border:none;
+      outline:none;
+      font:inherit;
+      border-radius:12px;
+    }
+
+    select{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      min-width: 110px;
+    }
+
+    button{
+      cursor:pointer;
+      background:linear-gradient(135deg, #7da4ff, #94b8ff);
+      color:#fff;
+      padding:8px 12px;
+      font-weight:700;
+      box-shadow: 0 4px 10px rgba(95,140,255,0.25);
+    }
+
+    button.alt{
+      background:linear-gradient(135deg, #ff9fc6, #ffb86f);
+    }
+
+    button.green{
+      background:linear-gradient(135deg, #63d6a0, #84e2c0);
+    }
+
+    button.gray{
+      background:linear-gradient(135deg, #a3b2c9, #bcc8d9);
+    }
+
+    .mainCard{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding: 1.2vh 1vw 1vh;
+      display:grid;
+      grid-template-rows: auto auto auto;
+      min-height: 0;
+      overflow:hidden;
+    }
+
+    .statusRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:0.8vh;
+      flex-wrap:wrap;
+    }
+
+    .pillRow{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      background:#f4f8ff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 11px;
+      font-size:13px;
+      color:var(--sub);
+      font-weight:700;
+    }
+
+    .illustrationArea{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:0;
+      gap:0.4vh;
+    }
+
+    .emoji{
+      font-size: clamp(54px, 8vh, 98px);
+      line-height:1;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+    }
+
+    .word{
+      font-size: clamp(34px, 5.8vh, 78px);
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:0.06em;
+      text-transform:lowercase;
+      text-align:center;
+      word-break:break-word;
+    }
+
+    .translation{
+      text-align:center;
+      font-size: clamp(22px, 3.1vh, 38px);
+      font-weight:800;
+      color:#ff7b9e;
+      letter-spacing:0.08em;
+      margin-top:0.4vh;
+    }
+
+    .typingArea{
+      background:linear-gradient(180deg,#f9fbff,#f4f8ff);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding: 1vh 1vw;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:0.7vh;
+      min-height: 0;
+      overflow:hidden;
+    }
+
+    .prompt{
+      text-align:center;
+      color:var(--sub);
+      font-size: clamp(12px, 1.2vw, 16px);
+      font-weight:700;
+    }
+
+    .typedLine{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:0;
+      flex-wrap:wrap;
+      min-height: 7.2vh;
+      padding: 0.2vh 0;
+      text-align:center;
+    }
+
+    .char{
+      font-size: clamp(26px, 4.4vh, 52px);
+      font-weight:900;
+      letter-spacing:0.02em;
+      color:var(--done);
+      transition:0.12s;
+      min-width: 0.6em;
+    }
+
+    .char.done{
+      color:var(--typed);
+      transform: translateY(-1px);
+    }
+
+    .char.current{
+      color:#ff8a00;
+      text-shadow:0 0 10px rgba(255,138,0,0.18);
+    }
+
+    .char.space{
+      width: 0.42em;
+    }
+
+    .inputInfo{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .nextKeyBox{
+      background:#fff;
+      border:2px solid #d8e4ff;
+      border-radius:18px;
+      padding: 8px 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-height:54px;
+    }
+
+    .nextKeyLabel{
+      color:var(--sub);
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .nextKey{
+      min-width:48px;
+      height:40px;
+      border-radius:12px;
+      border:2px solid #b8cfff;
+      background:#eef4ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:26px;
+      font-weight:900;
+      color:#3459b5;
+      box-shadow: inset 0 -3px 0 rgba(52,89,181,0.12);
+    }
+
+    .message{
+      min-height: 24px;
+      text-align:center;
+      font-weight:800;
+      font-size: 16px;
+      color: var(--sub);
+    }
+
+    .sectionCard{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding: 0.9vh 1vw;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      min-height:0;
+      overflow:hidden;
+    }
+
+    .sectionTitle{
+      text-align:center;
+      font-size: clamp(16px, 1.5vw, 22px);
+      font-weight:900;
+      margin-bottom:0.7vh;
+      color:#476089;
+      letter-spacing:0.04em;
+    }
+
+    .keyboardWrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:0;
+      overflow:hidden;
+    }
+
+    .keyboard{
+      display:grid;
+      grid-template-columns: repeat(10, minmax(32px, 1fr));
+      gap: 0.4vw;
+      width:min(940px, 92%);
+    }
+
+    .key{
+      background:var(--key);
+      border:2px solid #cfe0ff;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: clamp(15px, 1.7vw, 25px);
+      font-weight:900;
+      color:#3a568a;
+      aspect-ratio: 1.2 / 1;
+      box-shadow: inset 0 -3px 0 rgba(58,86,138,0.10);
+      transition:0.12s;
+    }
+
+    .key.active{
+      background:var(--keyActive);
+      border-color:#ffbe30;
+      color:#7a4a00;
+      transform:translateY(-2px);
+      box-shadow:
+        0 0 0 4px rgba(255,224,128,0.35),
+        inset 0 -3px 0 rgba(122,74,0,0.10);
+    }
+
+    .handsWrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap: min(3vw, 40px);
+      min-height:0;
+      overflow:hidden;
+    }
+
+    .handCard{
+      background:linear-gradient(180deg,#fffaf1,#fff);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding: 0.8vh 1vw;
+      width:min(520px, 44%);
+      min-width: 290px;
+    }
+
+    .handTitle{
+      text-align:center;
+      font-size: clamp(13px, 1vw, 16px);
+      font-weight:800;
+      color:var(--sub);
+      margin-bottom: 0.5vh;
+    }
+
+    .fingers{
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      gap: 0.7vw;
+      height: 100%;
+    }
+
+    .finger{
+      width:min(4.4vw, 46px);
+      min-width:26px;
+      border-radius:18px 18px 12px 12px;
+      background:linear-gradient(180deg,#ffe6c8,#ffd8ae);
+      border:2px solid #f0bf84;
+      position:relative;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      font-size: clamp(11px, 0.95vw, 14px);
+      font-weight:900;
+      color:#8d5a1d;
+      padding-top: 5px;
+      transition:0.12s;
+      box-shadow: inset 0 -3px 0 rgba(141,90,29,0.10);
+    }
+
+    .finger.active{
+      background:linear-gradient(180deg,#ffef8d,#ffd05d);
+      border-color:#ffac2d;
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 0 4px rgba(255,224,128,0.35),
+        inset 0 -3px 0 rgba(122,74,0,0.10);
+    }
+
+    .finger.index  { height: 11vh; max-height: 98px; min-height: 60px; }
+    .finger.middle { height: 12vh; max-height: 108px; min-height: 66px; }
+    .finger.ring   { height: 11.2vh; max-height: 100px; min-height: 62px; }
+    .finger.pinky  { height: 9.2vh; max-height: 82px; min-height: 50px; }
+    .finger.thumb  {
+      height: 6.4vh; max-height: 58px; min-height: 36px;
+      width:min(5.4vw, 60px);
+      border-radius:16px;
+      align-self:center;
+      transform: translateY(12px) rotate(-18deg);
+    }
+    .right .finger.thumb{
+      transform: translateY(12px) rotate(18deg);
+    }
+
+    .progressBar{
+      height:10px;
+      border-radius:999px;
+      background:#eaf1ff;
+      overflow:hidden;
+      border:1px solid #d3e2ff;
+      margin-top: 0.5vh;
+    }
+
+    .progressInner{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#7da4ff,#ff9fc6,#7ad9a7);
+      transition:0.18s;
+    }
+
+    .footerNote{
+      text-align:center;
+      color:var(--sub);
+      font-size:12px;
+      font-weight:700;
+      opacity:0.95;
+      min-height: 16px;
+    }
+
+    @media (max-width: 1100px){
+      .app{
+        grid-template-rows:
+          auto
+          minmax(0, 1.45fr)
+          auto
+          auto
+          minmax(0, 1fr)
+          minmax(0, 1.05fr);
+        padding: 1vh 1vw;
+      }
+      .topbar{
+        padding: 0.8vh 1vw;
+      }
+      .controls{
+        gap:6px;
+      }
+      .controlBox{
+        padding:5px 8px;
+      }
+      .handCard{
+        min-width: 240px;
+      }
+    }
+
+    @media (max-width: 860px){
+      .topbar{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .controls{
+        justify-content:center;
+      }
+      .handsWrap{
+        gap: 10px;
+      }
+      .handCard{
+        width: 48%;
+        min-width: 0;
+      }
+      .keyboard{
+        width:98%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="titleWrap">
+        <div class="titleBadge">🧸</div>
+        <div class="titleText">
+          <h1>こども英単語タイピング</h1>
+          <p>どうぶつ・のりもの・かぐ・せいかつのことば 100ご</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="controlBox">
+          <label for="groupSelect">グループ</label>
+          <select id="groupSelect"></select>
+        </div>
+
+        <div class="controlBox">
+          <label for="modeSelect">モード</label>
+          <select id="modeSelect">
+            <option value="repeat">このグループをくりかえす</option>
+            <option value="auto">つぎのグループへじどういどう</option>
+          </select>
+        </div>
+
+        <button id="replayBtn" class="alt">🔊 よみなおし</button>
+        <button id="shuffleBtn" class="green">🔀 このグループをシャッフル</button>
+        <button id="restartBtn" class="gray">↺ はじめから</button>
+      </div>
+    </div>
+
+    <div class="mainCard">
+      <div class="statusRow">
+        <div class="pillRow">
+          <div class="pill" id="groupInfo">グループ 1 / 10</div>
+          <div class="pill" id="wordInfo">もんだい 1 / 10</div>
+          <div class="pill" id="modeInfo">このグループをくりかえす</div>
+        </div>
+        <div class="pillRow">
+          <div class="pill">スペースキー：よみなおし</div>
+          <div class="pill">Enter：つぎのことば</div>
+        </div>
+      </div>
+
+      <div class="illustrationArea">
+        <div class="emoji" id="emoji">🐶</div>
+        <div class="word" id="wordDisplay">dog</div>
+        <div class="translation" id="translationDisplay">いぬ</div>
+      </div>
+
+      <div class="typingArea">
+        <div class="prompt">うえの えいたんご を うって ください</div>
+        <div class="typedLine" id="typedLine"></div>
+        <div class="inputInfo">
+          <div class="nextKeyBox">
+            <div class="nextKeyLabel">つぎに おすキー</div>
+            <div class="nextKey" id="nextKeyBox">D</div>
+          </div>
+        </div>
+        <div class="message" id="message">キーを おして スタート</div>
+        <div class="progressBar">
+          <div class="progressInner" id="progressInner"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sectionCard">
+      <div class="sectionTitle">⌨️ キーボード</div>
+      <div class="keyboardWrap">
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+    </div>
+
+    <div class="sectionCard">
+      <div class="sectionTitle">🖐️ つかう ゆび</div>
+      <div class="handsWrap">
+        <div class="handCard">
+          <div class="handTitle">ひだりて</div>
+          <div class="fingers left">
+            <div class="finger pinky"  id="finger-LP">こ</div>
+            <div class="finger ring"   id="finger-LR">く</div>
+            <div class="finger middle" id="finger-LM">な</div>
+            <div class="finger index"  id="finger-LI">ひ</div>
+            <div class="finger thumb"  id="finger-LT">お</div>
+          </div>
+        </div>
+
+        <div class="handCard">
+          <div class="handTitle">みぎて</div>
+          <div class="fingers right">
+            <div class="finger thumb"  id="finger-RT">お</div>
+            <div class="finger index"  id="finger-RI">ひ</div>
+            <div class="finger middle" id="finger-RM">な</div>
+            <div class="finger ring"   id="finger-RR">く</div>
+            <div class="finger pinky"  id="finger-RP">こ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footerNote" id="footerNote">
+      10ごずつ れんしゅうできます。ことばは じどうで よみあげます。
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // 100 words / 10 groups
+    // =========================================================
+    const groups = [
+      [
+        { en:"dog",        ja:"いぬ",           emoji:"🐶" },
+        { en:"cat",        ja:"ねこ",           emoji:"🐱" },
+        { en:"bird",       ja:"とり",           emoji:"🐦" },
+        { en:"fish",       ja:"さかな",         emoji:"🐟" },
+        { en:"rabbit",     ja:"うさぎ",         emoji:"🐰" },
+        { en:"horse",      ja:"うま",           emoji:"🐴" },
+        { en:"cow",        ja:"うし",           emoji:"🐮" },
+        { en:"pig",        ja:"ぶた",           emoji:"🐷" },
+        { en:"duck",       ja:"あひる",         emoji:"🦆" },
+        { en:"frog",       ja:"かえる",         emoji:"🐸" }
+      ],
+      [
+        { en:"lion",       ja:"らいおん",       emoji:"🦁" },
+        { en:"tiger",      ja:"とら",           emoji:"🐯" },
+        { en:"bear",       ja:"くま",           emoji:"🐻" },
+        { en:"monkey",     ja:"さる",           emoji:"🐵" },
+        { en:"elephant",   ja:"ぞう",           emoji:"🐘" },
+        { en:"giraffe",    ja:"きりん",         emoji:"🦒" },
+        { en:"zebra",      ja:"しまうま",       emoji:"🦓" },
+        { en:"panda",      ja:"ぱんだ",         emoji:"🐼" },
+        { en:"koala",      ja:"こあら",         emoji:"🐨" },
+        { en:"sheep",      ja:"ひつじ",         emoji:"🐑" }
+      ],
+      [
+        { en:"apple",      ja:"りんご",         emoji:"🍎" },
+        { en:"banana",     ja:"ばなな",         emoji:"🍌" },
+        { en:"orange",     ja:"おれんじ",       emoji:"🍊" },
+        { en:"grape",      ja:"ぶどう",         emoji:"🍇" },
+        { en:"peach",      ja:"もも",           emoji:"🍑" },
+        { en:"melon",      ja:"めろん",         emoji:"🍈" },
+        { en:"lemon",      ja:"れもん",         emoji:"🍋" },
+        { en:"tomato",     ja:"とまと",         emoji:"🍅" },
+        { en:"carrot",     ja:"にんじん",       emoji:"🥕" },
+        { en:"corn",       ja:"とうもろこし",   emoji:"🌽" }
+      ],
+      [
+        { en:"bread",      ja:"ぱん",           emoji:"🍞" },
+        { en:"milk",       ja:"ぎゅうにゅう",   emoji:"🥛" },
+        { en:"water",      ja:"みず",           emoji:"💧" },
+        { en:"juice",      ja:"じゅーす",       emoji:"🧃" },
+        { en:"rice",       ja:"ごはん",         emoji:"🍚" },
+        { en:"egg",        ja:"たまご",         emoji:"🥚" },
+        { en:"cake",       ja:"けーき",         emoji:"🍰" },
+        { en:"cookie",     ja:"くっきー",       emoji:"🍪" },
+        { en:"candy",      ja:"あめ",           emoji:"🍬" },
+        { en:"icecream",   ja:"あいすくりーむ", emoji:"🍨" }
+      ],
+      [
+        { en:"table",      ja:"てーぶる",       emoji:"🪵" },
+        { en:"chair",      ja:"いす",           emoji:"🪑" },
+        { en:"bed",        ja:"べっど",         emoji:"🛏️" },
+        { en:"sofa",       ja:"そふぁ",         emoji:"🛋️" },
+        { en:"desk",       ja:"つくえ",         emoji:"🧑‍💼" },
+        { en:"door",       ja:"どあ",           emoji:"🚪" },
+        { en:"window",     ja:"まど",           emoji:"🪟" },
+        { en:"clock",      ja:"とけい",         emoji:"🕒" },
+        { en:"lamp",       ja:"らんぷ",         emoji:"💡" },
+        { en:"mirror",     ja:"かがみ",         emoji:"🪞" }
+      ],
+      [
+        { en:"pencil",     ja:"えんぴつ",       emoji:"✏️" },
+        { en:"book",       ja:"ほん",           emoji:"📘" },
+        { en:"bag",        ja:"かばん",         emoji:"🎒" },
+        { en:"ball",       ja:"ぼーる",         emoji:"⚽" },
+        { en:"doll",       ja:"にんぎょう",     emoji:"🪆" },
+        { en:"robot",      ja:"ろぼっと",       emoji:"🤖" },
+        { en:"drum",       ja:"たいこ",         emoji:"🥁" },
+        { en:"train",      ja:"でんしゃ",       emoji:"🚆" },
+        { en:"plane",      ja:"ひこうき",       emoji:"✈️" },
+        { en:"boat",       ja:"ふね",           emoji:"⛵" }
+      ],
+      [
+        { en:"car",        ja:"くるま",         emoji:"🚗" },
+        { en:"bus",        ja:"ばす",           emoji:"🚌" },
+        { en:"bike",       ja:"じてんしゃ",     emoji:"🚲" },
+        { en:"truck",      ja:"とらっく",       emoji:"🚚" },
+        { en:"ship",       ja:"ふね",           emoji:"🚢" },
+        { en:"taxi",       ja:"たくしー",       emoji:"🚕" },
+        { en:"rocket",     ja:"ろけっと",       emoji:"🚀" },
+        { en:"scooter",    ja:"すくーたー",     emoji:"🛴" },
+        { en:"helmet",     ja:"へるめっと",     emoji:"⛑️" },
+        { en:"wheel",      ja:"わ",             emoji:"🛞" }
+      ],
+      [
+        { en:"house",      ja:"いえ",           emoji:"🏠" },
+        { en:"school",     ja:"がっこう",       emoji:"🏫" },
+        { en:"park",       ja:"こうえん",       emoji:"🌳" },
+        { en:"store",      ja:"みせ",           emoji:"🏪" },
+        { en:"garden",     ja:"にわ",           emoji:"🌷" },
+        { en:"kitchen",    ja:"きっちん",       emoji:"🍳" },
+        { en:"bath",       ja:"おふろ",         emoji:"🛁" },
+        { en:"toilet",     ja:"といれ",         emoji:"🚽" },
+        { en:"stairs",     ja:"かいだん",       emoji:"🪜" },
+        { en:"room",       ja:"へや",           emoji:"🧸" }
+      ],
+      [
+        { en:"sun",        ja:"たいよう",       emoji:"☀️" },
+        { en:"moon",       ja:"つき",           emoji:"🌙" },
+        { en:"star",       ja:"ほし",           emoji:"⭐" },
+        { en:"cloud",      ja:"くも",           emoji:"☁️" },
+        { en:"rain",       ja:"あめ",           emoji:"🌧️" },
+        { en:"snow",       ja:"ゆき",           emoji:"❄️" },
+        { en:"tree",       ja:"き",             emoji:"🌳" },
+        { en:"flower",     ja:"はな",           emoji:"🌸" },
+        { en:"leaf",       ja:"はっぱ",         emoji:"🍃" },
+        { en:"stone",      ja:"いし",           emoji:"🪨" }
+      ],
+      [
+        { en:"hand",       ja:"て",             emoji:"✋" },
+        { en:"foot",       ja:"あし",           emoji:"🦶" },
+        { en:"eye",        ja:"め",             emoji:"👁️" },
+        { en:"nose",       ja:"はな",           emoji:"👃" },
+        { en:"mouth",      ja:"くち",           emoji:"👄" },
+        { en:"ear",        ja:"みみ",           emoji:"👂" },
+        { en:"hat",        ja:"ぼうし",         emoji:"🧢" },
+        { en:"shirt",      ja:"しゃつ",         emoji:"👕" },
+        { en:"pants",      ja:"ずぼん",         emoji:"👖" },
+        { en:"shoes",      ja:"くつ",           emoji:"👟" }
+      ]
+    ];
+
+    // =========================================================
+    // Keyboard & finger map
+    // =========================================================
+    const keyboardRows = [
+      ["Q","W","E","R","T","Y","U","I","O","P"],
+      ["A","S","D","F","G","H","J","K","L"],
+      ["Z","X","C","V","B","N","M"]
+    ];
+
+    const fingerMap = {
+      "Q":"LP","A":"LP","Z":"LP",
+      "W":"LR","S":"LR","X":"LR",
+      "E":"LM","D":"LM","C":"LM",
+      "R":"LI","F":"LI","V":"LI","T":"LI","G":"LI","B":"LI",
+      "Y":"RI","H":"RI","N":"RI","U":"RI","J":"RI","M":"RI",
+      "I":"RM","K":"RM",
+      "O":"RR","L":"RR",
+      "P":"RP"
+    };
+
+    // =========================================================
+    // State
+    // =========================================================
+    const groupSelect = document.getElementById("groupSelect");
+    const modeSelect = document.getElementById("modeSelect");
+    const replayBtn = document.getElementById("replayBtn");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    const emojiEl = document.getElementById("emoji");
+    const wordDisplay = document.getElementById("wordDisplay");
+    const translationDisplay = document.getElementById("translationDisplay");
+    const typedLine = document.getElementById("typedLine");
+    const nextKeyBox = document.getElementById("nextKeyBox");
+    const messageEl = document.getElementById("message");
+    const progressInner = document.getElementById("progressInner");
+
+    const groupInfo = document.getElementById("groupInfo");
+    const wordInfo = document.getElementById("wordInfo");
+    const modeInfo = document.getElementById("modeInfo");
+    const footerNote = document.getElementById("footerNote");
+    const keyboardEl = document.getElementById("keyboard");
+
+    let currentGroupIndex = 0;
+    let currentWordIndex = 0;
+    let inputIndex = 0;
+    let completedInGroup = 0;
+    let groupOrder = groups.map(group => group.map((_, i) => i));
+    let audioCtx = null;
+
+    // =========================================================
+    // Build UI
+    // =========================================================
+    function buildGroupSelect(){
+      groupSelect.innerHTML = "";
+      groups.forEach((g, i) => {
+        const op = document.createElement("option");
+        op.value = i;
+        op.textContent = `グループ ${i + 1}`;
+        groupSelect.appendChild(op);
+      });
+    }
+
+    function buildKeyboard(){
+      keyboardEl.innerHTML = "";
+      keyboardRows.forEach(row => {
+        row.forEach(letter => {
+          const key = document.createElement("div");
+          key.className = "key";
+          key.id = `key-${letter}`;
+          key.textContent = letter;
+          keyboardEl.appendChild(key);
+        });
+
+        if(row.length === 9){
+          const spacer = document.createElement("div");
+          spacer.style.visibility = "hidden";
+          keyboardEl.appendChild(spacer);
+        }
+        if(row.length === 7){
+          for(let i = 0; i < 3; i++){
+            const spacer = document.createElement("div");
+            spacer.style.visibility = "hidden";
+            keyboardEl.appendChild(spacer);
+          }
+        }
+      });
+    }
+
+    // =========================================================
+    // Helpers
+    // =========================================================
+    function getCurrentWord(){
+      const actualIndex = groupOrder[currentGroupIndex][currentWordIndex];
+      return groups[currentGroupIndex][actualIndex];
+    }
+
+    function shuffleCurrentGroup(){
+      const arr = groupOrder[currentGroupIndex];
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function getNextChar(){
+      const word = getCurrentWord().en;
+      return word[inputIndex] || "";
+    }
+
+    function speakCurrentWord(){
+      const word = getCurrentWord().en;
+      if(!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(word);
+      utter.lang = "en-US";
+      utter.rate = 0.85;
+      utter.pitch = 1.15;
+      utter.volume = 1;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function initAudio(){
+      if(!audioCtx){
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if(audioCtx.state === "suspended"){
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(type){
+      initAudio();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if(type === "type"){
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(720, now);
+        osc.frequency.exponentialRampToValueAtTime(980, now + 0.04);
+        filter.type = "highpass";
+        filter.frequency.value = 500;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.06, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.085);
+      } else if(type === "miss"){
+        osc.type = "square";
+        osc.frequency.setValueAtTime(240, now);
+        osc.frequency.exponentialRampToValueAtTime(170, now + 0.10);
+        filter.type = "lowpass";
+        filter.frequency.value = 900;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.08, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      } else if(type === "clear"){
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.14);
+        filter.type = "bandpass";
+        filter.frequency.value = 1200;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.08, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+    }
+
+    function clearHighlights(){
+      document.querySelectorAll(".key.active").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".finger.active").forEach(el => el.classList.remove("active"));
+    }
+
+    function highlightKeyAndFinger(letter){
+      clearHighlights();
+      if(!letter) return;
+      const upper = letter.toUpperCase();
+      const key = document.getElementById(`key-${upper}`);
+      if(key) key.classList.add("active");
+
+      const fingerId = fingerMap[upper];
+      if(fingerId){
+        const finger = document.getElementById(`finger-${fingerId}`);
+        if(finger) finger.classList.add("active");
+      }
+    }
+
+    function renderTypedLine(){
+      const word = getCurrentWord().en;
+      typedLine.innerHTML = "";
+
+      for(let i = 0; i < word.length; i++){
+        const span = document.createElement("span");
+        span.className = "char";
+        const ch = word[i];
+        span.textContent = ch.toUpperCase();
+
+        if(i < inputIndex){
+          span.classList.add("done");
+        } else if(i === inputIndex){
+          span.classList.add("current");
+        }
+        typedLine.appendChild(span);
+      }
+
+      const next = getNextChar();
+      nextKeyBox.textContent = next ? next.toUpperCase() : "✓";
+
+      const progress = (inputIndex / word.length) * 100;
+      progressInner.style.width = `${progress}%`;
+    }
+
+    function renderWord(){
+      const item = getCurrentWord();
+      emojiEl.textContent = item.emoji;
+      wordDisplay.textContent = item.en;
+      translationDisplay.textContent = item.ja;
+      inputIndex = 0;
+      renderTypedLine();
+      updateStatus();
+      highlightKeyAndFinger(getNextChar());
+      messageEl.textContent = "キーを おして スタート";
+      progressInner.style.width = "0%";
+      setTimeout(() => speakCurrentWord(), 180);
+    }
+
+    function updateStatus(){
+      groupInfo.textContent = `グループ ${currentGroupIndex + 1} / 10`;
+      wordInfo.textContent = `もんだい ${currentWordIndex + 1} / 10`;
+      modeInfo.textContent =
+        modeSelect.value === "repeat"
+          ? "このグループをくりかえす"
+          : "つぎのグループへじどういどう";
+
+      footerNote.textContent =
+        modeSelect.value === "repeat"
+          ? "グループのおわりまで いったら このグループを もういちど れんしゅうします。"
+          : "グループのおわりまで いったら つぎのグループへ じどうで すすみます。";
+    }
+
+    function nextWord(){
+      currentWordIndex++;
+      completedInGroup++;
+
+      if(currentWordIndex >= 10){
+        currentWordIndex = 0;
+
+        if(modeSelect.value === "auto"){
+          currentGroupIndex++;
+          if(currentGroupIndex >= 10){
+            currentGroupIndex = 0;
+          }
+          groupSelect.value = currentGroupIndex;
+        }
+      }
+
+      updateStatus();
+      renderWord();
+    }
+
+    function restartCurrentFromTop(){
+      currentWordIndex = 0;
+      completedInGroup = 0;
+      renderWord();
+    }
+
+    function handleCorrectKey(){
+      playTone("type");
+      inputIndex++;
+      renderTypedLine();
+      highlightKeyAndFinger(getNextChar());
+
+      const word = getCurrentWord().en;
+
+      if(inputIndex >= word.length){
+        playTone("clear");
+        progressInner.style.width = "100%";
+        messageEl.textContent = "せいかい！ Enterで つぎへ";
+        clearHighlights();
+        setTimeout(() => {
+          nextWord();
+        }, 650);
+      } else {
+        messageEl.textContent = "いいね！";
+      }
+    }
+
+    function handleWrongKey(){
+      playTone("miss");
+      messageEl.textContent = "ちがうキーです";
+      const main = document.querySelector(".mainCard");
+      main.animate(
+        [
+          { transform: "translateX(0px)" },
+          { transform: "translateX(-4px)" },
+          { transform: "translateX(4px)" },
+          { transform: "translateX(0px)" }
+        ],
+        { duration: 120, iterations: 1 }
+      );
+    }
+
+    // =========================================================
+    // Events
+    // =========================================================
+    document.addEventListener("keydown", (e) => {
+      const key = e.key;
+
+      if(key === " "){
+        e.preventDefault();
+        speakCurrentWord();
+        messageEl.textContent = "もういちど よみあげました";
+        return;
+      }
+
+      if(key === "Enter"){
+        e.preventDefault();
+        nextWord();
+        return;
+      }
+
+      if(!/^[a-zA-Z]$/.test(key)) return;
+
+      const expected = getNextChar();
+      if(!expected) return;
+
+      const pressed = key.toLowerCase();
+      if(pressed === expected.toLowerCase()){
+        handleCorrectKey();
+      } else {
+        handleWrongKey();
+      }
+    });
+
+    groupSelect.addEventListener("change", () => {
+      currentGroupIndex = Number(groupSelect.value);
+      currentWordIndex = 0;
+      completedInGroup = 0;
+      renderWord();
+    });
+
+    modeSelect.addEventListener("change", () => {
+      updateStatus();
+    });
+
+    replayBtn.addEventListener("click", () => {
+      speakCurrentWord();
+      messageEl.textContent = "もういちど よみあげました";
+    });
+
+    shuffleBtn.addEventListener("click", () => {
+      shuffleCurrentGroup();
+      currentWordIndex = 0;
+      completedInGroup = 0;
+      renderWord();
+      messageEl.textContent = "このグループを シャッフルしました";
+    });
+
+    restartBtn.addEventListener("click", () => {
+      currentGroupIndex = 0;
+      currentWordIndex = 0;
+      completedInGroup = 0;
+      groupSelect.value = 0;
+      renderWord();
+      messageEl.textContent = "はじめから スタート";
+    });
+
+    window.addEventListener("click", () => {
+      if(audioCtx && audioCtx.state === "suspended"){
+        audioCtx.resume();
+      }
+    }, { once: false });
+
+    // =========================================================
+    // Init
+    // =========================================================
+    buildGroupSelect();
+    buildKeyboard();
+    updateStatus();
+    renderWord();
+  </script>
+</body>
+</html>
