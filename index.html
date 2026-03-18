@@ -58,9 +58,9 @@
       display: grid;
       grid-template-rows:
         auto
-        minmax(0, 1.2fr)
-        minmax(0, 0.72fr)
-        minmax(0, 0.68fr)
+        minmax(0, 1.18fr)
+        minmax(0, 0.64fr)
+        minmax(0, 0.88fr)
         auto;
       gap: 8px;
     }
@@ -75,7 +75,7 @@
       border-radius:20px;
       padding:8px 12px;
       box-shadow:var(--shadow);
-      min-height: 62px;
+      min-height:62px;
     }
 
     .titleWrap{
@@ -395,7 +395,7 @@
     .keyboard{
       display:grid;
       grid-template-columns: repeat(10, minmax(24px, 1fr));
-      gap: 4px;
+      gap:4px;
       width:min(620px, 72%);
     }
 
@@ -471,134 +471,139 @@
       box-shadow:0 0 0 4px rgba(255,159,224,0.28), inset 0 -3px 0 rgba(122,35,95,0.10);
     }
 
+    .handsSection{
+      padding: 10px 12px;
+    }
+
     .handsWrap{
       display:flex;
       justify-content:center;
       align-items:center;
-      gap:16px;
+      gap:18px;
       min-height:0;
       overflow:hidden;
       flex:1 1 auto;
+      height:100%;
     }
 
     .handCard{
       background:linear-gradient(180deg,#fffaf1,#fff);
       border:1px solid var(--line);
-      border-radius:18px;
-      padding:8px 10px;
-      width:min(430px, 42%);
-      min-width:240px;
-      min-height:0;
+      border-radius:22px;
+      padding:12px 14px;
+      width:min(520px, 46%);
+      min-width:250px;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       overflow:hidden;
-    }
-
-    .handTitle{
-      text-align:center;
-      font-size:13px;
-      font-weight:800;
-      color:var(--sub);
-      margin-bottom:4px;
     }
 
     .fingers{
       display:flex;
       justify-content:center;
       align-items:flex-end;
-      gap:8px;
+      gap:14px;
+      width:100%;
       height:100%;
-      min-height:0;
     }
 
     .finger{
-      width:min(4vw, 38px);
-      min-width:24px;
-      border-radius:16px 16px 10px 10px;
+      width:min(5.4vw, 52px);
+      min-width:30px;
+      border-radius:22px 22px 14px 14px;
       background:linear-gradient(180deg,#ffe6c8,#ffd8ae);
-      border:2px solid #f0bf84;
+      border:3px solid #f0bf84;
       display:flex;
       align-items:flex-start;
       justify-content:center;
-      font-size:12px;
+      font-size:18px;
       font-weight:900;
       color:#8d5a1d;
-      padding-top:4px;
+      padding-top:10px;
       transition:0.12s;
-      box-shadow: inset 0 -3px 0 rgba(141,90,29,0.10);
+      box-shadow: inset 0 -4px 0 rgba(141,90,29,0.10);
       position: relative;
+      flex: 0 0 auto;
     }
 
     .finger.active{
-      transform: translateY(-4px);
+      transform: translateY(-6px);
     }
 
     .finger#finger-LP.active{
       background:linear-gradient(180deg,var(--finger-lp),#ffbdc3);
       border-color:#e16d78;
-      box-shadow:0 0 0 4px rgba(255,154,162,0.28), inset 0 -3px 0 rgba(110,33,48,0.10);
+      box-shadow:0 0 0 5px rgba(255,154,162,0.28), inset 0 -4px 0 rgba(110,33,48,0.10);
       color:#6e2130;
     }
     .finger#finger-LR.active{
       background:linear-gradient(180deg,var(--finger-lr),#ffd19a);
       border-color:#db9440;
-      box-shadow:0 0 0 4px rgba(255,184,107,0.28), inset 0 -3px 0 rgba(112,65,0,0.10);
+      box-shadow:0 0 0 5px rgba(255,184,107,0.28), inset 0 -4px 0 rgba(112,65,0,0.10);
       color:#704100;
     }
     .finger#finger-LM.active{
       background:linear-gradient(180deg,var(--finger-lm),#fff0a9);
       border-color:#d1b54f;
-      box-shadow:0 0 0 4px rgba(255,226,122,0.28), inset 0 -3px 0 rgba(110,87,0,0.10);
+      box-shadow:0 0 0 5px rgba(255,226,122,0.28), inset 0 -4px 0 rgba(110,87,0,0.10);
       color:#6e5700;
     }
     .finger#finger-LI.active{
       background:linear-gradient(180deg,var(--finger-li),#bdf2ca);
       border-color:#51bc71;
-      box-shadow:0 0 0 4px rgba(142,227,163,0.28), inset 0 -3px 0 rgba(22,95,45,0.10);
+      box-shadow:0 0 0 5px rgba(142,227,163,0.28), inset 0 -4px 0 rgba(22,95,45,0.10);
       color:#165f2d;
     }
     .finger#finger-RI.active{
       background:linear-gradient(180deg,var(--finger-ri),#bfeeff);
       border-color:#53b6de;
-      box-shadow:0 0 0 4px rgba(126,214,255,0.28), inset 0 -3px 0 rgba(15,84,112,0.10);
+      box-shadow:0 0 0 5px rgba(126,214,255,0.28), inset 0 -4px 0 rgba(15,84,112,0.10);
       color:#0f5470;
     }
     .finger#finger-RM.active{
       background:linear-gradient(180deg,var(--finger-rm),#cad8ff);
       border-color:#728ddd;
-      box-shadow:0 0 0 4px rgba(158,183,255,0.28), inset 0 -3px 0 rgba(36,58,122,0.10);
+      box-shadow:0 0 0 5px rgba(158,183,255,0.28), inset 0 -4px 0 rgba(36,58,122,0.10);
       color:#243a7a;
     }
     .finger#finger-RR.active{
       background:linear-gradient(180deg,var(--finger-rr),#dec9ff);
       border-color:#9374d7;
-      box-shadow:0 0 0 4px rgba(199,166,255,0.28), inset 0 -3px 0 rgba(79,46,135,0.10);
+      box-shadow:0 0 0 5px rgba(199,166,255,0.28), inset 0 -4px 0 rgba(79,46,135,0.10);
       color:#4f2e87;
     }
     .finger#finger-RP.active{
       background:linear-gradient(180deg,var(--finger-rp),#ffc8ef);
       border-color:#dc6ec0;
-      box-shadow:0 0 0 4px rgba(255,159,224,0.28), inset 0 -3px 0 rgba(122,35,95,0.10);
+      box-shadow:0 0 0 5px rgba(255,159,224,0.28), inset 0 -4px 0 rgba(122,35,95,0.10);
       color:#7a235f;
     }
 
-    .finger.index  { height: min(70px, 8.2vh); }
-    .finger.middle { height: min(76px, 8.9vh); }
-    .finger.ring   { height: min(72px, 8.4vh); }
-    .finger.pinky  { height: min(58px, 6.8vh); }
+    .finger.index  { height: min(132px, 15.5vh); }
+    .finger.middle { height: min(146px, 17vh); }
+    .finger.ring   { height: min(138px, 16vh); }
+    .finger.pinky  { height: min(114px, 13.2vh); }
+
     .finger.thumb  {
-      height: min(42px, 4.8vh);
-      width:min(48px, 5vw);
-      border-radius:14px;
+      height: min(78px, 9vh);
+      width:min(6.6vw, 66px);
+      border-radius:20px;
       align-self:center;
-      transform: translateY(10px) rotate(-18deg);
+      transform: translateY(20px) rotate(-18deg);
     }
+
     .right .finger.thumb{
-      transform: translateY(10px) rotate(18deg);
+      transform: translateY(20px) rotate(18deg);
     }
+
     .left .finger.thumb.active{
-      transform: translateY(6px) rotate(-18deg);
+      transform: translateY(14px) rotate(-18deg);
     }
+
     .right .finger.thumb.active{
-      transform: translateY(6px) rotate(18deg);
+      transform: translateY(14px) rotate(18deg);
     }
 
     .footerNote{
@@ -628,15 +633,23 @@
         min-width:0;
         width:48%;
       }
+
+      .fingers{
+        gap:10px;
+      }
+
+      .finger{
+        font-size:16px;
+      }
     }
 
     @media (max-width: 760px){
       .app{
         grid-template-rows:
           auto
-          minmax(0, 1.16fr)
-          minmax(0, 0.66fr)
-          minmax(0, 0.72fr)
+          minmax(0, 1.14fr)
+          minmax(0, 0.60fr)
+          minmax(0, 0.92fr)
           auto;
       }
 
@@ -649,9 +662,17 @@
       }
 
       .finger{
-        min-width:20px;
-        font-size:11px;
+        min-width:24px;
+        font-size:14px;
+        padding-top:8px;
+        border-width:2px;
       }
+
+      .finger.index  { height: min(100px, 12vh); }
+      .finger.middle { height: min(112px, 13vh); }
+      .finger.ring   { height: min(104px, 12.4vh); }
+      .finger.pinky  { height: min(84px, 10vh); }
+      .finger.thumb  { height: min(60px, 7vh); }
     }
   </style>
 </head>
@@ -730,11 +751,9 @@
       </div>
     </div>
 
-    <div class="sectionCard">
-      <div class="sectionTitle">🖐️ つかう ゆび</div>
+    <div class="sectionCard handsSection">
       <div class="handsWrap">
         <div class="handCard">
-          <div class="handTitle">ひだりて</div>
           <div class="fingers left">
             <div class="finger pinky"  id="finger-LP">こ</div>
             <div class="finger ring"   id="finger-LR">く</div>
@@ -745,7 +764,6 @@
         </div>
 
         <div class="handCard">
-          <div class="handTitle">みぎて</div>
           <div class="fingers right">
             <div class="finger thumb"  id="finger-RT">お</div>
             <div class="finger index"  id="finger-RI">ひ</div>
