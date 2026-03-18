@@ -12,11 +12,11 @@
       --bg2:#f7fff7;
       --bg3:#f7fbff;
       --ink:#25345f;
-      --sub:#6f7ea8;
+      --sub:#7a87ad;
       --line:#d7e3fb;
       --panel:rgba(255,255,255,0.88);
       --panel-strong:rgba(255,255,255,0.96);
-      --shadow:0 10px 30px rgba(123, 149, 201, 0.12);
+      --shadow:0 8px 24px rgba(123, 149, 201, 0.10);
 
       --left-pinky:#ff8fb1;
       --left-ring:#ffb86b;
@@ -32,12 +32,13 @@
       --key-border:#c8d8fb;
       --key-text:#415786;
       --active-key-text:#25345f;
-      --ng:#ff7f96;
     }
 
     html, body {
       margin: 0;
-      min-height: 100%;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
       color: var(--ink);
       background:
@@ -45,20 +46,19 @@
         radial-gradient(circle at top right, #ffd7ec 0%, transparent 24%),
         radial-gradient(circle at bottom left, #dfffe5 0%, transparent 30%),
         linear-gradient(135deg, var(--bg1), var(--bg2) 48%, var(--bg3));
-      overflow-x: hidden;
     }
 
     body {
-      min-height: 100vh;
-      padding: 14px;
+      padding: 8px;
     }
 
     .app {
       width: min(1380px, 100%);
+      height: calc(100vh - 16px);
       margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1.05fr) minmax(0, 0.78fr) minmax(0, 0.9fr);
+      gap: 8px;
       overflow: hidden;
     }
 
@@ -66,34 +66,36 @@
     .panel {
       background: var(--panel);
       border: 2px solid var(--line);
-      border-radius: 26px;
+      border-radius: 22px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
+      overflow: hidden;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      padding: 12px 16px;
-      flex-wrap: wrap;
+      gap: 10px;
+      padding: 8px 12px;
+      min-height: 66px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      min-width: 260px;
+      gap: 10px;
+      min-width: 0;
+      flex: 1 1 auto;
     }
 
     .brand-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
       display: grid;
       place-items: center;
-      font-size: 28px;
+      font-size: 18px;
       background: linear-gradient(135deg, #fef3bf, #dff5ff 55%, #e8ddff);
       border: 2px solid var(--line);
       flex: 0 0 auto;
@@ -101,176 +103,218 @@
 
     .brand h1 {
       margin: 0;
-      font-size: 20px;
-      line-height: 1.1;
+      font-size: clamp(18px, 1.8vw, 28px);
+      line-height: 1.05;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .brand p {
-      margin: 4px 0 0;
-      font-size: 12px;
+      margin: 2px 0 0;
+      font-size: clamp(10px, 0.85vw, 12px);
       color: var(--sub);
-      font-weight: 700;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .controls {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
+      flex: 0 0 auto;
     }
 
-    .field,
-    .btn {
-      height: 50px;
-      border-radius: 16px;
-      border: 2px solid var(--line);
-      background: var(--panel-strong);
+    .controlBox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f7faff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 5px 8px;
+      min-height: 38px;
+    }
+
+    .controlBox label {
+      font-size: 12px;
+      color: var(--sub);
+      white-space: nowrap;
+    }
+
+    select, button {
+      border: none;
+      outline: none;
+      font: inherit;
+      border-radius: 10px;
+    }
+
+    select {
+      background: #fff;
       color: var(--ink);
-      font-size: 16px;
+      border: 1px solid var(--line);
+      padding: 6px 8px;
+      min-width: 100px;
+      font-size: 13px;
       font-weight: 800;
-      box-shadow: 0 4px 0 rgba(170, 187, 224, 0.28);
     }
 
-    .field {
-      padding: 0 14px;
-      min-width: 190px;
-    }
-
-    .btn {
-      padding: 0 16px;
+    button {
       cursor: pointer;
-      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+      color: #fff;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 3px 8px rgba(95,140,255,0.22);
     }
 
-    .btn:hover { filter: brightness(1.02); }
-    .btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 rgba(170, 187, 224, 0.28);
+    button.default { background: linear-gradient(135deg, #7da4ff, #94b8ff); }
+    button.alt { background: linear-gradient(135deg, #ff9fc6, #ffb86f); }
+    button.green { background: linear-gradient(135deg, #63d6a0, #84e2c0); }
+    button.gray { background: linear-gradient(135deg, #a3b2c9, #bcc8d9); }
+
+    .mainCard {
+      padding: 8px 10px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-height: 0;
     }
 
-    .btn-read { background: linear-gradient(135deg, #ffdbe6, #ffc8da); }
-    .btn-shuffle { background: linear-gradient(135deg, #d9fff0, #bff5ef); }
-    .btn-reset { background: linear-gradient(135deg, #ebe5ff, #dfe7ff); }
-
-    .stage {
-      padding: 14px;
-    }
-
-    .chips {
+    .statusRow {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
-    .chip-wrap {
+    .pillWrap {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
-    .chip {
-      padding: 9px 14px;
+    .pill {
+      background: #f4f8ff;
+      border: 1px solid var(--line);
       border-radius: 999px;
-      font-size: 14px;
-      font-weight: 900;
-      background: #eef3ff;
-      border: 2px solid var(--line);
-      color: #536a9b;
+      padding: 5px 9px;
+      font-size: 12px;
+      color: var(--sub);
+      font-weight: 800;
     }
 
-    .hero {
-      background: rgba(250, 252, 255, 0.92);
-      border: 2px solid var(--line);
-      border-radius: 24px;
-      padding: 20px 18px 18px;
-      text-align: center;
-      min-height: 320px;
+    .questionArea {
+      min-height: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 8px;
+      padding: 4px 0;
       overflow: hidden;
     }
 
     .word {
-      margin: 0;
-      font-size: clamp(72px, 11vw, 116px);
-      line-height: 1;
-      letter-spacing: 0.05em;
-      font-weight: 1000;
-      color: #22345e;
-      user-select: none;
-      white-space: nowrap;
+      font-size: clamp(54px, 8.6vh, 108px);
+      line-height: 1.02;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      word-break: break-word;
       max-width: 100%;
     }
 
-    .word .done {
-      color: #a5b2d3;
+    .translation {
+      text-align: center;
+      font-size: clamp(18px, 2.5vh, 30px);
+      font-weight: 900;
+      color: #ff7fb9;
+      letter-spacing: 0.08em;
+      max-width: 100%;
+      word-break: break-word;
     }
 
-    .word .current {
-      display: inline-block;
-      transform: scale(1.04);
+    .char {
+      transition: 0.12s;
+      min-width: 0.6em;
+      color: #95a2c6;
     }
 
-    .word .rest {
+    .char.done {
+      color: #b9c4e0;
+      transform: translateY(-1px);
+    }
+
+    .char.current {
+      text-shadow: 0 0 10px rgba(0,0,0,0.08);
+    }
+
+    .char.rest {
       color: #22345e;
     }
 
-    .meaning {
-      margin-top: 10px;
-      font-size: clamp(26px, 3.4vw, 40px);
-      color: #ff8fb1;
-      font-weight: 1000;
-      line-height: 1.1;
-    }
-
-    .keyboard-panel {
-      padding: 10px 14px 16px;
+    .sectionCard {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
       overflow: hidden;
     }
 
-    .keyboard-frame {
-      background: rgba(255,255,255,0.9);
-      border: 2px solid var(--line);
-      border-radius: 22px;
-      padding: 22px 10px 16px;
-      overflow-x: auto;
-      overflow-y: hidden;
+    .sectionTitle {
+      text-align: center;
+      font-size: clamp(12px, 1.2vw, 18px);
+      font-weight: 900;
+      margin-bottom: 4px;
+      color: #476089;
+      letter-spacing: 0.04em;
+      flex: 0 0 auto;
+    }
+
+    .keyboardWrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 0;
+      overflow: hidden;
+      flex: 1 1 auto;
     }
 
     .keyboard {
-      width: max-content;
-      margin: 0 auto;
       display: grid;
-      gap: 7px;
-      padding-bottom: 2px;
+      gap: 6px;
+      transform-origin: center center;
+      max-width: 100%;
     }
 
-    .key-row {
+    .keyRow {
       display: flex;
-      gap: 7px;
+      gap: 6px;
       justify-content: center;
     }
 
     .key {
-      width: 60px;
-      height: 52px;
+      width: clamp(42px, 3.6vw, 62px);
+      height: clamp(40px, 3.8vw, 54px);
       border-radius: 14px;
       background: var(--key-bg);
       border: 2px solid var(--key-border);
       display: grid;
       place-items: center;
       font-weight: 1000;
-      font-size: 18px;
+      font-size: clamp(18px, 1.45vw, 30px);
       color: var(--key-text);
       box-shadow: 0 4px 0 rgba(173, 191, 231, 0.35);
       transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease;
-      flex: 0 0 auto;
+      user-select: none;
     }
 
     .key.active {
@@ -279,54 +323,54 @@
       box-shadow: 0 2px 0 rgba(173, 191, 231, 0.35);
     }
 
-    .hands-panel {
-      padding: 12px 14px 16px;
-      overflow: hidden;
-    }
-
-    .hands {
+    .handsWrap {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .hand-card {
-      background: rgba(255,255,255,0.85);
-      border: 2px solid var(--line);
-      border-radius: 24px;
-      padding: 16px 12px 8px;
-      height: 250px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+      gap: 12px;
+      min-height: 0;
+      flex: 1 1 auto;
       overflow: hidden;
     }
 
-    .finger-wrap {
+    .handCard {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.7);
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      gap: 10px;
-      height: 200px;
+      min-height: 0;
       overflow: hidden;
+      padding: 8px 8px 0;
+    }
+
+    .fingerWrap {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 8px;
+      height: 100%;
+      max-height: 210px;
+      overflow: hidden;
+      transform-origin: bottom center;
     }
 
     .finger {
-      width: 54px;
+      width: clamp(40px, 3.2vw, 56px);
       border-radius: 24px 24px 16px 16px;
       border: 4px solid #eab873;
       background: linear-gradient(180deg, #ffe2bf, #ffd29f);
       box-shadow:
         inset 0 -4px 0 rgba(255,255,255,0.28),
-        0 6px 0 rgba(234, 184, 115, 0.25);
+        0 6px 0 rgba(234, 184, 115, 0.20);
       position: relative;
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      padding-top: 12px;
+      padding-top: 10px;
       color: #7f4d08;
       font-weight: 1000;
-      font-size: 16px;
+      font-size: clamp(14px, 1.1vw, 20px);
       transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
       flex: 0 0 auto;
     }
@@ -334,110 +378,141 @@
     .finger::after {
       content: "";
       position: absolute;
-      left: 8px;
-      right: 8px;
-      bottom: 10px;
-      height: 10px;
+      left: 7px;
+      right: 7px;
+      bottom: 8px;
+      height: 8px;
       border-radius: 999px;
       background: rgba(255,255,255,0.28);
     }
 
-    .f-pinky { height: 150px; }
-    .f-ring { height: 176px; }
-    .f-middle { height: 196px; }
-    .f-index { height: 168px; }
+    .f-pinky { height: 126px; }
+    .f-ring { height: 148px; }
+    .f-middle { height: 166px; }
+    .f-index { height: 142px; }
 
     .thumb {
-      width: 70px;
-      height: 90px;
+      width: 58px;
+      height: 78px;
       border-radius: 22px;
       transform: rotate(-18deg);
-      margin: 0 0 6px 4px;
-      padding-top: 16px;
+      margin: 0 0 6px 2px;
+      padding-top: 13px;
     }
 
     .right-thumb {
       transform: rotate(18deg);
-      margin: 0 4px 6px 0;
+      margin: 0 2px 6px 0;
     }
 
     .finger.active {
       transform: translateY(-4px);
       box-shadow:
-        0 0 0 6px rgba(255,255,255,0.9),
-        0 0 0 10px rgba(255,255,255,0.55),
+        0 0 0 5px rgba(255,255,255,0.88),
+        0 0 0 9px rgba(255,255,255,0.46),
         0 10px 20px rgba(0,0,0,0.08);
       filter: saturate(1.08) brightness(1.03);
     }
 
-    .shake {
-      animation: shake 0.22s linear;
+    .mainCard.shake {
+      animation: shakeScreen 0.16s linear 1;
     }
 
-    @keyframes shake {
+    @keyframes shakeScreen {
       0% { transform: translateX(0); }
-      20% { transform: translateX(-9px); }
-      40% { transform: translateX(8px); }
-      60% { transform: translateX(-7px); }
-      80% { transform: translateX(6px); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
       100% { transform: translateX(0); }
     }
 
-    @media (max-width: 1100px) {
-      .hands {
-        grid-template-columns: 1fr;
+    @media (max-width: 1180px) {
+      .topbar {
+        padding: 8px 10px;
       }
-      .hand-card {
-        height: 220px;
+      .controlBox label {
+        display: none;
       }
-      .finger-wrap {
-        transform: scale(0.94);
-        transform-origin: bottom center;
+      .controls {
+        gap: 6px;
+      }
+      select {
+        min-width: 90px;
       }
     }
 
-    @media (max-width: 840px) {
-      body { padding: 10px; }
-      .topbar, .panel { border-radius: 20px; }
-      .hero { min-height: 260px; }
-      .key {
-        width: 52px;
-        height: 48px;
-        font-size: 17px;
+    @media (max-width: 920px) {
+      .app {
+        grid-template-rows: auto minmax(0, 1fr) minmax(0, 0.72fr) minmax(0, 0.9fr);
       }
-      .field { min-width: 160px; }
-      .hand-card {
-        height: 210px;
-      }
-      .finger-wrap {
-        height: 180px;
+      .handsWrap {
         gap: 8px;
-        transform: scale(0.88);
+      }
+      .fingerWrap {
+        transform: scale(0.9);
+      }
+      .brand p {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 6px;
+      }
+      .app {
+        height: calc(100vh - 12px);
+        gap: 6px;
+      }
+      .topbar, .panel {
+        border-radius: 18px;
+      }
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: 0;
+      }
+      .brand {
+        width: 100%;
+      }
+      .controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .controlBox {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      select, button {
+        width: 100%;
+      }
+      .handsWrap {
+        grid-template-columns: 1fr 1fr;
+      }
+      .fingerWrap {
+        transform: scale(0.78);
+      }
+      .sectionTitle {
+        font-size: 12px;
       }
     }
 
     @media (max-width: 560px) {
       .controls {
-        justify-content: stretch;
+        flex-wrap: wrap;
       }
-      .field, .btn {
-        width: 100%;
+      .controlBox {
+        flex: 1 1 48%;
       }
-      .key {
-        width: 46px;
-        height: 44px;
-        font-size: 16px;
-        border-radius: 12px;
+      .handsWrap {
+        gap: 6px;
+      }
+      .fingerWrap {
+        transform: scale(0.68);
       }
       .word {
-        white-space: normal;
-        word-break: break-word;
-      }
-      .hand-card {
-        height: 190px;
-      }
-      .finger-wrap {
-        transform: scale(0.78);
+        letter-spacing: 0.04em;
       }
     }
   </style>
@@ -447,47 +522,55 @@
     <div class="topbar">
       <div class="brand">
         <div class="brand-icon">⌨️</div>
-        <div>
+        <div class="titleWrap">
           <h1>こども英単語タイピング</h1>
           <p>どうぶつ・のりもの・かぐ・せいかつのことば 100こ</p>
         </div>
       </div>
 
       <div class="controls">
-        <select id="groupSelect" class="field" aria-label="グループ選択"></select>
-        <select id="modeSelect" class="field" aria-label="モード選択">
-          <option value="repeat">このグループをくりかえす</option>
-          <option value="next">このグループがおわったらつぎへ</option>
-        </select>
-        <button id="readBtn" class="btn btn-read">📣 よみなおし</button>
-        <button id="shuffleBtn" class="btn btn-shuffle">🔀 シャッフル</button>
-        <button id="resetBtn" class="btn btn-reset">↺ はじめから</button>
+        <div class="controlBox">
+          <label for="groupSelect">グループ</label>
+          <select id="groupSelect"></select>
+        </div>
+
+        <div class="controlBox">
+          <label for="modeSelect">モード</label>
+          <select id="modeSelect">
+            <option value="repeat">このグループをくりかえす</option>
+            <option value="next">つぎのグループへ</option>
+          </select>
+        </div>
+
+        <button id="readBtn" class="alt">📣 よみなおし</button>
+        <button id="shuffleBtn" class="green">🔀 シャッフル</button>
+        <button id="resetBtn" class="gray">↺ はじめから</button>
       </div>
     </div>
 
-    <section class="panel stage">
-      <div class="chips">
-        <div class="chip-wrap">
-          <div id="groupInfo" class="chip">グループ 1 / 10</div>
-          <div id="questionInfo" class="chip">もんだい 1 / 10</div>
-          <div id="modeInfo" class="chip">このグループをくりかえす</div>
+    <section id="mainCard" class="panel mainCard">
+      <div class="statusRow">
+        <div class="pillWrap">
+          <div id="groupInfo" class="pill">グループ 1 / 10</div>
+          <div id="questionInfo" class="pill">もんだい 1 / 10</div>
         </div>
-        <div class="chip-wrap">
-          <div class="chip">スペースキー：よみなおし</div>
-          <div class="chip">Enter：つぎへ</div>
+        <div class="pillWrap">
+          <div class="pill">Space: よみなおし</div>
+          <div class="pill">Enter: つぎへ</div>
         </div>
       </div>
 
-      <div id="hero" class="hero">
-        <h2 id="wordText" class="word" aria-live="polite"></h2>
-        <div id="meaningText" class="meaning">いぬ</div>
+      <div class="questionArea">
+        <div id="wordText" class="word"></div>
+        <div id="meaningText" class="translation"></div>
       </div>
     </section>
 
-    <section class="panel keyboard-panel">
-      <div class="keyboard-frame">
-        <div class="keyboard" id="keyboard">
-          <div class="key-row">
+    <section class="panel sectionCard">
+      <div class="sectionTitle">キーボード</div>
+      <div class="keyboardWrap">
+        <div class="keyboard">
+          <div class="keyRow">
             <div class="key" data-key="Q">Q</div>
             <div class="key" data-key="W">W</div>
             <div class="key" data-key="E">E</div>
@@ -499,7 +582,7 @@
             <div class="key" data-key="O">O</div>
             <div class="key" data-key="P">P</div>
           </div>
-          <div class="key-row">
+          <div class="keyRow">
             <div class="key" data-key="A">A</div>
             <div class="key" data-key="S">S</div>
             <div class="key" data-key="D">D</div>
@@ -510,7 +593,7 @@
             <div class="key" data-key="K">K</div>
             <div class="key" data-key="L">L</div>
           </div>
-          <div class="key-row">
+          <div class="keyRow">
             <div class="key" data-key="Z">Z</div>
             <div class="key" data-key="X">X</div>
             <div class="key" data-key="C">C</div>
@@ -523,10 +606,10 @@
       </div>
     </section>
 
-    <section class="panel hands-panel">
-      <div class="hands">
-        <div class="hand-card">
-          <div class="finger-wrap">
+    <section class="panel sectionCard">
+      <div class="handsWrap">
+        <div class="handCard">
+          <div class="fingerWrap">
             <div class="finger f-pinky" data-finger="LP">こ</div>
             <div class="finger f-ring" data-finger="LR">く</div>
             <div class="finger f-middle" data-finger="LM">な</div>
@@ -535,8 +618,8 @@
           </div>
         </div>
 
-        <div class="hand-card">
-          <div class="finger-wrap">
+        <div class="handCard">
+          <div class="fingerWrap">
             <div class="finger thumb right-thumb" data-finger="RT">お</div>
             <div class="finger f-index" data-finger="RI">ひ</div>
             <div class="finger f-middle" data-finger="RM">な</div>
@@ -708,11 +791,9 @@
 
     const groupInfo = document.getElementById("groupInfo");
     const questionInfo = document.getElementById("questionInfo");
-    const modeInfo = document.getElementById("modeInfo");
-
     const wordText = document.getElementById("wordText");
     const meaningText = document.getElementById("meaningText");
-    const hero = document.getElementById("hero");
+    const mainCard = document.getElementById("mainCard");
 
     const keyEls = [...document.querySelectorAll(".key")];
     const fingerEls = [...document.querySelectorAll(".finger")];
@@ -764,7 +845,7 @@
       const activeColor = finger ? FINGER_COLOR[finger] : "#22345e";
 
       wordText.innerHTML = `
-        <span class="done">${escapeHTML(done)}</span><span class="current" style="color:${activeColor};">${escapeHTML(current)}</span><span class="rest">${escapeHTML(rest)}</span>
+        <span class="char done">${escapeHTML(done)}</span><span class="char current" style="color:${activeColor};">${escapeHTML(current)}</span><span class="char rest">${escapeHTML(rest)}</span>
       `;
     }
 
@@ -779,9 +860,6 @@
     function updateInfo() {
       groupInfo.textContent = `グループ ${groupIndex + 1} / ${groups.length}`;
       questionInfo.textContent = `もんだい ${questionIndex + 1} / ${groups[groupIndex].length}`;
-      modeInfo.textContent = modeSelect.value === "repeat"
-        ? "このグループをくりかえす"
-        : "このグループがおわったらつぎへ";
     }
 
     function clearHighlights() {
@@ -823,7 +901,7 @@
       }
     }
 
-    function nextQuestion(auto = false) {
+    function nextQuestion() {
       typedIndex = 0;
       questionIndex += 1;
 
@@ -836,8 +914,6 @@
 
       groupSelect.value = String(groupIndex);
       renderWordInfo();
-
-      if (auto) speakCurrentWord();
     }
 
     function shuffleCurrentGroup() {
@@ -867,15 +943,15 @@
       updateHighlights();
 
       if (typedIndex >= currentWord().en.length) {
-        setTimeout(() => nextQuestion(false), 180);
+        setTimeout(() => nextQuestion(), 170);
       }
     }
 
     function handleWrongInput() {
       playMissSound();
-      hero.classList.remove("shake");
-      void hero.offsetWidth;
-      hero.classList.add("shake");
+      mainCard.classList.remove("shake");
+      void mainCard.offsetWidth;
+      mainCard.classList.add("shake");
     }
 
     function speakCurrentWord() {
@@ -972,10 +1048,6 @@
       renderWordInfo();
     });
 
-    modeSelect.addEventListener("change", () => {
-      updateInfo();
-    });
-
     readBtn.addEventListener("click", speakCurrentWord);
     shuffleBtn.addEventListener("click", shuffleCurrentGroup);
     resetBtn.addEventListener("click", resetAll);
@@ -991,7 +1063,7 @@
 
       if (e.key === "Enter") {
         e.preventDefault();
-        nextQuestion(false);
+        nextQuestion();
         return;
       }
 
