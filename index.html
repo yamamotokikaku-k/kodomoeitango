@@ -6,6 +6,7 @@
   <title>こども英単語タイピング</title>
   <style>
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       width: 100%;
@@ -18,29 +19,24 @@
       --bg1:#f9fbff;
       --bg2:#fff8ef;
       --bg3:#f7fff4;
-      --panel:#ffffffdd;
+      --panel:#ffffffee;
       --line:#d7e3f5;
       --text:#20304a;
       --sub:#5f7191;
-      --accent:#5f8cff;
-      --accent2:#ff9ec7;
-      --accent3:#7ad9a7;
-      --good:#4a90ff;
-      --miss:#ff6f7d;
-      --done:#7f8da8;
-      --key:#eef4ff;
       --typed:#5f8cff;
-      --shadow:0 8px 24px rgba(84,115,180,0.12);
+      --done:#7f8da8;
+      --miss:#ff6f7d;
+      --key:#eef4ff;
+      --shadow:0 6px 18px rgba(84,115,180,0.10);
 
-      /* 指ごとの色 */
-      --finger-lp:#ff9aa2; /* 左小指 */
-      --finger-lr:#ffb86b; /* 左薬指 */
-      --finger-lm:#ffe27a; /* 左中指 */
-      --finger-li:#8ee3a3; /* 左人差し指 */
-      --finger-ri:#7ed6ff; /* 右人差し指 */
-      --finger-rm:#9eb7ff; /* 右中指 */
-      --finger-rr:#c7a6ff; /* 右薬指 */
-      --finger-rp:#ff9fe0; /* 右小指 */
+      --finger-lp:#ff9aa2;
+      --finger-lr:#ffb86b;
+      --finger-lm:#ffe27a;
+      --finger-li:#8ee3a3;
+      --finger-ri:#7ed6ff;
+      --finger-rm:#9eb7ff;
+      --finger-rr:#c7a6ff;
+      --finger-rp:#ff9fe0;
     }
 
     body{
@@ -56,68 +52,67 @@
     .app{
       width: 100%;
       height: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 8px 10px;
       display: grid;
       grid-template-rows:
         auto
-        minmax(0, 1.45fr)
-        auto
-        auto
-        minmax(0, 0.85fr)
-        minmax(0, 0.78fr);
-      gap: 0.7vh;
-      padding: 1vh 1vw;
-      max-width: 1500px;
-      margin: 0 auto;
+        minmax(0, 1.2fr)
+        minmax(0, 0.72fr)
+        minmax(0, 0.68fr)
+        auto;
+      gap: 8px;
     }
 
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:10px;
       background:var(--panel);
       border:1px solid var(--line);
-      border-radius:22px;
-      padding:0.8vh 1vw;
+      border-radius:20px;
+      padding:8px 12px;
       box-shadow:var(--shadow);
-      min-height: 7.2vh;
+      min-height: 62px;
     }
 
     .titleWrap{
       display:flex;
       align-items:center;
-      gap:12px;
-      min-width: 0;
+      gap:10px;
+      min-width:0;
     }
 
     .titleBadge{
-      width:46px;
-      height:46px;
-      border-radius:16px;
+      width:42px;
+      height:42px;
+      border-radius:14px;
       background:linear-gradient(135deg,#ffd1e7,#c9dcff,#d7ffd8);
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:28px;
-      flex: 0 0 auto;
+      font-size:24px;
+      flex:0 0 auto;
     }
 
     .titleText h1{
       margin:0;
-      font-size: clamp(20px, 2vw, 30px);
-      line-height:1.1;
+      font-size:clamp(18px, 1.8vw, 28px);
+      line-height:1.05;
     }
 
     .titleText p{
       margin:2px 0 0;
-      font-size: clamp(11px, 0.95vw, 14px);
+      font-size:clamp(10px, 0.85vw, 13px);
       color:var(--sub);
     }
 
     .controls{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
       justify-content:flex-end;
     }
@@ -128,13 +123,13 @@
       gap:6px;
       background:#f7faff;
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:6px 10px;
-      min-height: 42px;
+      border-radius:12px;
+      padding:5px 8px;
+      min-height:38px;
     }
 
     .controlBox label{
-      font-size:13px;
+      font-size:12px;
       color:var(--sub);
       white-space:nowrap;
     }
@@ -143,62 +138,69 @@
       border:none;
       outline:none;
       font:inherit;
-      border-radius:12px;
+      border-radius:10px;
     }
 
     select{
       background:#fff;
       color:var(--text);
       border:1px solid var(--line);
-      padding:7px 10px;
-      min-width: 110px;
+      padding:6px 8px;
+      min-width:100px;
+      font-size:13px;
     }
 
     button{
       cursor:pointer;
-      background:linear-gradient(135deg, #7da4ff, #94b8ff);
       color:#fff;
-      padding:8px 12px;
-      font-weight:700;
-      box-shadow: 0 4px 10px rgba(95,140,255,0.25);
+      padding:7px 10px;
+      font-size:13px;
+      font-weight:800;
+      box-shadow: 0 3px 8px rgba(95,140,255,0.22);
     }
 
-    button.alt{
-      background:linear-gradient(135deg, #ff9fc6, #ffb86f);
-    }
-
-    button.green{
-      background:linear-gradient(135deg, #63d6a0, #84e2c0);
-    }
-
-    button.gray{
-      background:linear-gradient(135deg, #a3b2c9, #bcc8d9);
-    }
+    button.default{ background:linear-gradient(135deg, #7da4ff, #94b8ff); }
+    button.alt{ background:linear-gradient(135deg, #ff9fc6, #ffb86f); }
+    button.green{ background:linear-gradient(135deg, #63d6a0, #84e2c0); }
+    button.gray{ background:linear-gradient(135deg, #a3b2c9, #bcc8d9); }
 
     .mainCard{
       background:var(--panel);
       border:1px solid var(--line);
-      border-radius:26px;
+      border-radius:24px;
       box-shadow:var(--shadow);
-      padding: 1vh 1vw 0.9vh;
+      padding:10px 12px;
       display:grid;
-      grid-template-rows: auto auto auto;
-      min-height: 0;
+      grid-template-rows:auto minmax(0, 1fr) auto;
+      min-height:0;
       overflow:hidden;
+    }
+
+    .mainCard.shake{
+      animation: shakeScreen 0.16s linear 1;
+    }
+
+    @keyframes shakeScreen {
+      0%   { transform: translateX(0); }
+      20%  { transform: translateX(-6px); }
+      40%  { transform: translateX(6px); }
+      60%  { transform: translateX(-5px); }
+      80%  { transform: translateX(5px); }
+      100% { transform: translateX(0); }
     }
 
     .statusRow{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:12px;
-      margin-bottom:0.6vh;
+      gap:10px;
       flex-wrap:wrap;
+      margin-bottom:8px;
     }
 
     .pillRow{
       display:flex;
-      gap:8px;
+      gap:6px;
       flex-wrap:wrap;
     }
 
@@ -206,64 +208,62 @@
       background:#f4f8ff;
       border:1px solid var(--line);
       border-radius:999px;
-      padding:6px 10px;
-      font-size:13px;
+      padding:5px 9px;
+      font-size:12px;
       color:var(--sub);
-      font-weight:700;
+      font-weight:800;
     }
 
-    .illustrationArea{
+    .questionArea{
+      min-height:0;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      min-height:0;
-      gap:0.2vh;
-    }
-
-    .emoji{
-      font-size: clamp(46px, 6.8vh, 82px);
-      line-height:1;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+      gap:8px;
+      padding:4px 0;
+      overflow:hidden;
     }
 
     .word{
-      font-size: clamp(30px, 5vh, 70px);
+      font-size:clamp(28px, 4.2vh, 58px);
       line-height:1.02;
       font-weight:900;
-      letter-spacing:0.06em;
+      letter-spacing:0.08em;
       text-transform:lowercase;
       text-align:center;
       word-break:break-word;
+      max-width:100%;
     }
 
     .translation{
       text-align:center;
-      font-size: clamp(20px, 2.7vh, 34px);
-      font-weight:800;
+      font-size:clamp(18px, 2.5vh, 30px);
+      font-weight:900;
       color:#ff7b9e;
       letter-spacing:0.08em;
-      margin-top:0.2vh;
+      max-width:100%;
+      word-break:break-word;
     }
 
     .typingArea{
       background:linear-gradient(180deg,#f9fbff,#f4f8ff);
       border:1px solid var(--line);
-      border-radius:22px;
-      padding: 0.8vh 1vw;
+      border-radius:18px;
+      padding:8px 10px;
       display:flex;
       flex-direction:column;
       justify-content:center;
-      gap:0.55vh;
-      min-height: 0;
+      gap:6px;
+      min-height:0;
       overflow:hidden;
     }
 
     .prompt{
       text-align:center;
       color:var(--sub);
-      font-size: clamp(12px, 1.1vw, 15px);
-      font-weight:700;
+      font-size:13px;
+      font-weight:800;
     }
 
     .typedLine{
@@ -272,18 +272,18 @@
       align-items:center;
       gap:0;
       flex-wrap:wrap;
-      min-height: 6.4vh;
-      padding: 0.1vh 0;
+      min-height:46px;
       text-align:center;
+      overflow:hidden;
     }
 
     .char{
-      font-size: clamp(24px, 3.8vh, 46px);
+      font-size:clamp(22px, 3.1vh, 40px);
       font-weight:900;
       letter-spacing:0.02em;
       color:var(--done);
       transition:0.12s;
-      min-width: 0.6em;
+      min-width:0.6em;
     }
 
     .char.done{
@@ -300,293 +300,57 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
     }
 
     .nextKeyBox{
       background:#fff;
       border:2px solid #d8e4ff;
-      border-radius:18px;
-      padding: 7px 14px;
+      border-radius:16px;
+      padding:6px 12px;
       display:flex;
       align-items:center;
-      gap:10px;
-      min-height:50px;
+      gap:8px;
+      min-height:44px;
     }
 
     .nextKeyLabel{
       color:var(--sub);
-      font-size:14px;
-      font-weight:700;
+      font-size:13px;
+      font-weight:800;
     }
 
     .nextKey{
-      min-width:46px;
-      height:38px;
-      border-radius:12px;
+      min-width:42px;
+      height:34px;
+      border-radius:10px;
       border:2px solid #b8cfff;
       background:#eef4ff;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:24px;
+      font-size:22px;
       font-weight:900;
       color:#3459b5;
       box-shadow: inset 0 -3px 0 rgba(52,89,181,0.12);
     }
 
     .message{
-      min-height: 22px;
+      min-height:20px;
       text-align:center;
-      font-weight:800;
-      font-size: 15px;
+      font-weight:900;
+      font-size:14px;
       color: var(--sub);
     }
 
-    .sectionCard{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:24px;
-      box-shadow:var(--shadow);
-      padding: 0.7vh 1vw;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      min-height:0;
-      overflow:hidden;
-    }
-
-    .sectionTitle{
-      text-align:center;
-      font-size: clamp(15px, 1.4vw, 20px);
-      font-weight:900;
-      margin-bottom:0.45vh;
-      color:#476089;
-      letter-spacing:0.04em;
-    }
-
-    .keyboardWrap{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:0;
-      overflow:hidden;
-    }
-
-    .keyboard{
-      display:grid;
-      grid-template-columns: repeat(10, minmax(26px, 1fr));
-      gap: 0.28vw;
-      width:min(760px, 82%);
-    }
-
-    .key{
-      background:var(--key);
-      border:2px solid #cfe0ff;
-      border-radius:11px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: clamp(13px, 1.25vw, 19px);
-      font-weight:900;
-      color:#3a568a;
-      aspect-ratio: 1.22 / 1;
-      box-shadow: inset 0 -3px 0 rgba(58,86,138,0.10);
-      transition:0.12s;
-    }
-
-    /* 指ごとにキーの色を変える */
-    .key.active.LP{
-      background:var(--finger-lp);
-      border-color:#e16d78;
-      color:#6e2130;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(255,154,162,0.32), inset 0 -3px 0 rgba(110,33,48,0.10);
-    }
-    .key.active.LR{
-      background:var(--finger-lr);
-      border-color:#db9440;
-      color:#704100;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(255,184,107,0.32), inset 0 -3px 0 rgba(112,65,0,0.10);
-    }
-    .key.active.LM{
-      background:var(--finger-lm);
-      border-color:#d1b54f;
-      color:#6e5700;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(255,226,122,0.32), inset 0 -3px 0 rgba(110,87,0,0.10);
-    }
-    .key.active.LI{
-      background:var(--finger-li);
-      border-color:#51bc71;
-      color:#165f2d;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(142,227,163,0.32), inset 0 -3px 0 rgba(22,95,45,0.10);
-    }
-    .key.active.RI{
-      background:var(--finger-ri);
-      border-color:#53b6de;
-      color:#0f5470;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(126,214,255,0.32), inset 0 -3px 0 rgba(15,84,112,0.10);
-    }
-    .key.active.RM{
-      background:var(--finger-rm);
-      border-color:#728ddd;
-      color:#243a7a;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(158,183,255,0.32), inset 0 -3px 0 rgba(36,58,122,0.10);
-    }
-    .key.active.RR{
-      background:var(--finger-rr);
-      border-color:#9374d7;
-      color:#4f2e87;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(199,166,255,0.32), inset 0 -3px 0 rgba(79,46,135,0.10);
-    }
-    .key.active.RP{
-      background:var(--finger-rp);
-      border-color:#dc6ec0;
-      color:#7a235f;
-      transform:translateY(-2px);
-      box-shadow:0 0 0 4px rgba(255,159,224,0.32), inset 0 -3px 0 rgba(122,35,95,0.10);
-    }
-
-    .handsWrap{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap: min(3vw, 40px);
-      min-height:0;
-      overflow:hidden;
-    }
-
-    .handCard{
-      background:linear-gradient(180deg,#fffaf1,#fff);
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding: 0.7vh 1vw;
-      width:min(500px, 44%);
-      min-width: 290px;
-    }
-
-    .handTitle{
-      text-align:center;
-      font-size: clamp(13px, 1vw, 16px);
-      font-weight:800;
-      color:var(--sub);
-      margin-bottom: 0.35vh;
-    }
-
-    .fingers{
-      display:flex;
-      justify-content:center;
-      align-items:flex-end;
-      gap: 0.7vw;
-      height: 100%;
-    }
-
-    .finger{
-      width:min(4.2vw, 42px);
-      min-width:26px;
-      border-radius:18px 18px 12px 12px;
-      background:linear-gradient(180deg,#ffe6c8,#ffd8ae);
-      border:2px solid #f0bf84;
-      position:relative;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      font-size: clamp(11px, 0.95vw, 14px);
-      font-weight:900;
-      color:#8d5a1d;
-      padding-top: 5px;
-      transition:0.12s;
-      box-shadow: inset 0 -3px 0 rgba(141,90,29,0.10);
-    }
-
-    .finger.active{
-      transform: translateY(-4px);
-    }
-
-    .finger#finger-LP.active{
-      background:linear-gradient(180deg,var(--finger-lp),#ffbdc3);
-      border-color:#e16d78;
-      box-shadow:0 0 0 4px rgba(255,154,162,0.32), inset 0 -3px 0 rgba(110,33,48,0.10);
-      color:#6e2130;
-    }
-    .finger#finger-LR.active{
-      background:linear-gradient(180deg,var(--finger-lr),#ffd19a);
-      border-color:#db9440;
-      box-shadow:0 0 0 4px rgba(255,184,107,0.32), inset 0 -3px 0 rgba(112,65,0,0.10);
-      color:#704100;
-    }
-    .finger#finger-LM.active{
-      background:linear-gradient(180deg,var(--finger-lm),#fff0a9);
-      border-color:#d1b54f;
-      box-shadow:0 0 0 4px rgba(255,226,122,0.32), inset 0 -3px 0 rgba(110,87,0,0.10);
-      color:#6e5700;
-    }
-    .finger#finger-LI.active{
-      background:linear-gradient(180deg,var(--finger-li),#bdf2ca);
-      border-color:#51bc71;
-      box-shadow:0 0 0 4px rgba(142,227,163,0.32), inset 0 -3px 0 rgba(22,95,45,0.10);
-      color:#165f2d;
-    }
-    .finger#finger-RI.active{
-      background:linear-gradient(180deg,var(--finger-ri),#bfeeff);
-      border-color:#53b6de;
-      box-shadow:0 0 0 4px rgba(126,214,255,0.32), inset 0 -3px 0 rgba(15,84,112,0.10);
-      color:#0f5470;
-    }
-    .finger#finger-RM.active{
-      background:linear-gradient(180deg,var(--finger-rm),#cad8ff);
-      border-color:#728ddd;
-      box-shadow:0 0 0 4px rgba(158,183,255,0.32), inset 0 -3px 0 rgba(36,58,122,0.10);
-      color:#243a7a;
-    }
-    .finger#finger-RR.active{
-      background:linear-gradient(180deg,var(--finger-rr),#dec9ff);
-      border-color:#9374d7;
-      box-shadow:0 0 0 4px rgba(199,166,255,0.32), inset 0 -3px 0 rgba(79,46,135,0.10);
-      color:#4f2e87;
-    }
-    .finger#finger-RP.active{
-      background:linear-gradient(180deg,var(--finger-rp),#ffc8ef);
-      border-color:#dc6ec0;
-      box-shadow:0 0 0 4px rgba(255,159,224,0.32), inset 0 -3px 0 rgba(122,35,95,0.10);
-      color:#7a235f;
-    }
-
-    .finger.index  { height: 9.6vh; max-height: 88px; min-height: 54px; }
-    .finger.middle { height: 10.6vh; max-height: 96px; min-height: 60px; }
-    .finger.ring   { height: 9.9vh; max-height: 90px; min-height: 56px; }
-    .finger.pinky  { height: 8.1vh; max-height: 74px; min-height: 46px; }
-    .finger.thumb  {
-      height: 5.5vh; max-height: 50px; min-height: 34px;
-      width:min(5vw, 54px);
-      border-radius:16px;
-      align-self:center;
-      transform: translateY(12px) rotate(-18deg);
-    }
-    .right .finger.thumb{
-      transform: translateY(12px) rotate(18deg);
-    }
-    .left .finger.thumb.active{
-      transform: translateY(8px) rotate(-18deg);
-    }
-    .right .finger.thumb.active{
-      transform: translateY(8px) rotate(18deg);
-    }
-
     .progressBar{
-      height:10px;
+      height:8px;
       border-radius:999px;
       background:#eaf1ff;
       overflow:hidden;
       border:1px solid #d3e2ff;
-      margin-top: 0.35vh;
+      margin-top:2px;
     }
 
     .progressInner{
@@ -596,60 +360,297 @@
       transition:0.18s;
     }
 
+    .sectionCard{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:8px 10px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      min-height:0;
+      overflow:hidden;
+    }
+
+    .sectionTitle{
+      text-align:center;
+      font-size:clamp(14px, 1.2vw, 18px);
+      font-weight:900;
+      margin-bottom:5px;
+      color:#476089;
+      letter-spacing:0.04em;
+      flex:0 0 auto;
+    }
+
+    .keyboardWrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:0;
+      overflow:hidden;
+      flex:1 1 auto;
+    }
+
+    .keyboard{
+      display:grid;
+      grid-template-columns: repeat(10, minmax(24px, 1fr));
+      gap: 4px;
+      width:min(620px, 72%);
+    }
+
+    .key{
+      background:var(--key);
+      border:2px solid #cfe0ff;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:clamp(12px, 1vw, 17px);
+      font-weight:900;
+      color:#3a568a;
+      aspect-ratio: 1.22 / 1;
+      box-shadow: inset 0 -3px 0 rgba(58,86,138,0.10);
+      transition:0.12s;
+    }
+
+    .key.active.LP{
+      background:var(--finger-lp);
+      border-color:#e16d78;
+      color:#6e2130;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(255,154,162,0.28), inset 0 -3px 0 rgba(110,33,48,0.10);
+    }
+    .key.active.LR{
+      background:var(--finger-lr);
+      border-color:#db9440;
+      color:#704100;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(255,184,107,0.28), inset 0 -3px 0 rgba(112,65,0,0.10);
+    }
+    .key.active.LM{
+      background:var(--finger-lm);
+      border-color:#d1b54f;
+      color:#6e5700;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(255,226,122,0.28), inset 0 -3px 0 rgba(110,87,0,0.10);
+    }
+    .key.active.LI{
+      background:var(--finger-li);
+      border-color:#51bc71;
+      color:#165f2d;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(142,227,163,0.28), inset 0 -3px 0 rgba(22,95,45,0.10);
+    }
+    .key.active.RI{
+      background:var(--finger-ri);
+      border-color:#53b6de;
+      color:#0f5470;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(126,214,255,0.28), inset 0 -3px 0 rgba(15,84,112,0.10);
+    }
+    .key.active.RM{
+      background:var(--finger-rm);
+      border-color:#728ddd;
+      color:#243a7a;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(158,183,255,0.28), inset 0 -3px 0 rgba(36,58,122,0.10);
+    }
+    .key.active.RR{
+      background:var(--finger-rr);
+      border-color:#9374d7;
+      color:#4f2e87;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(199,166,255,0.28), inset 0 -3px 0 rgba(79,46,135,0.10);
+    }
+    .key.active.RP{
+      background:var(--finger-rp);
+      border-color:#dc6ec0;
+      color:#7a235f;
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(255,159,224,0.28), inset 0 -3px 0 rgba(122,35,95,0.10);
+    }
+
+    .handsWrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      min-height:0;
+      overflow:hidden;
+      flex:1 1 auto;
+    }
+
+    .handCard{
+      background:linear-gradient(180deg,#fffaf1,#fff);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:8px 10px;
+      width:min(430px, 42%);
+      min-width:240px;
+      min-height:0;
+      overflow:hidden;
+    }
+
+    .handTitle{
+      text-align:center;
+      font-size:13px;
+      font-weight:800;
+      color:var(--sub);
+      margin-bottom:4px;
+    }
+
+    .fingers{
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      gap:8px;
+      height:100%;
+      min-height:0;
+    }
+
+    .finger{
+      width:min(4vw, 38px);
+      min-width:24px;
+      border-radius:16px 16px 10px 10px;
+      background:linear-gradient(180deg,#ffe6c8,#ffd8ae);
+      border:2px solid #f0bf84;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      font-size:12px;
+      font-weight:900;
+      color:#8d5a1d;
+      padding-top:4px;
+      transition:0.12s;
+      box-shadow: inset 0 -3px 0 rgba(141,90,29,0.10);
+      position: relative;
+    }
+
+    .finger.active{
+      transform: translateY(-4px);
+    }
+
+    .finger#finger-LP.active{
+      background:linear-gradient(180deg,var(--finger-lp),#ffbdc3);
+      border-color:#e16d78;
+      box-shadow:0 0 0 4px rgba(255,154,162,0.28), inset 0 -3px 0 rgba(110,33,48,0.10);
+      color:#6e2130;
+    }
+    .finger#finger-LR.active{
+      background:linear-gradient(180deg,var(--finger-lr),#ffd19a);
+      border-color:#db9440;
+      box-shadow:0 0 0 4px rgba(255,184,107,0.28), inset 0 -3px 0 rgba(112,65,0,0.10);
+      color:#704100;
+    }
+    .finger#finger-LM.active{
+      background:linear-gradient(180deg,var(--finger-lm),#fff0a9);
+      border-color:#d1b54f;
+      box-shadow:0 0 0 4px rgba(255,226,122,0.28), inset 0 -3px 0 rgba(110,87,0,0.10);
+      color:#6e5700;
+    }
+    .finger#finger-LI.active{
+      background:linear-gradient(180deg,var(--finger-li),#bdf2ca);
+      border-color:#51bc71;
+      box-shadow:0 0 0 4px rgba(142,227,163,0.28), inset 0 -3px 0 rgba(22,95,45,0.10);
+      color:#165f2d;
+    }
+    .finger#finger-RI.active{
+      background:linear-gradient(180deg,var(--finger-ri),#bfeeff);
+      border-color:#53b6de;
+      box-shadow:0 0 0 4px rgba(126,214,255,0.28), inset 0 -3px 0 rgba(15,84,112,0.10);
+      color:#0f5470;
+    }
+    .finger#finger-RM.active{
+      background:linear-gradient(180deg,var(--finger-rm),#cad8ff);
+      border-color:#728ddd;
+      box-shadow:0 0 0 4px rgba(158,183,255,0.28), inset 0 -3px 0 rgba(36,58,122,0.10);
+      color:#243a7a;
+    }
+    .finger#finger-RR.active{
+      background:linear-gradient(180deg,var(--finger-rr),#dec9ff);
+      border-color:#9374d7;
+      box-shadow:0 0 0 4px rgba(199,166,255,0.28), inset 0 -3px 0 rgba(79,46,135,0.10);
+      color:#4f2e87;
+    }
+    .finger#finger-RP.active{
+      background:linear-gradient(180deg,var(--finger-rp),#ffc8ef);
+      border-color:#dc6ec0;
+      box-shadow:0 0 0 4px rgba(255,159,224,0.28), inset 0 -3px 0 rgba(122,35,95,0.10);
+      color:#7a235f;
+    }
+
+    .finger.index  { height: min(70px, 8.2vh); }
+    .finger.middle { height: min(76px, 8.9vh); }
+    .finger.ring   { height: min(72px, 8.4vh); }
+    .finger.pinky  { height: min(58px, 6.8vh); }
+    .finger.thumb  {
+      height: min(42px, 4.8vh);
+      width:min(48px, 5vw);
+      border-radius:14px;
+      align-self:center;
+      transform: translateY(10px) rotate(-18deg);
+    }
+    .right .finger.thumb{
+      transform: translateY(10px) rotate(18deg);
+    }
+    .left .finger.thumb.active{
+      transform: translateY(6px) rotate(-18deg);
+    }
+    .right .finger.thumb.active{
+      transform: translateY(6px) rotate(18deg);
+    }
+
     .footerNote{
       text-align:center;
       color:var(--sub);
-      font-size:12px;
-      font-weight:700;
-      opacity:0.95;
-      min-height: 16px;
+      font-size:11px;
+      font-weight:800;
+      min-height:14px;
+      padding-bottom:2px;
     }
 
-    @media (max-width: 1100px){
-      .app{
-        grid-template-rows:
-          auto
-          minmax(0, 1.42fr)
-          auto
-          auto
-          minmax(0, 0.82fr)
-          minmax(0, 0.76fr);
-        padding: 0.9vh 1vw;
-      }
-      .topbar{
-        padding: 0.7vh 1vw;
-      }
-      .controls{
-        gap:6px;
-      }
-      .controlBox{
-        padding:5px 8px;
-      }
-      .handCard{
-        min-width: 240px;
-      }
-      .keyboard{
-        width:min(700px, 86%);
-      }
-    }
-
-    @media (max-width: 860px){
+    @media (max-width: 980px){
       .topbar{
         flex-direction:column;
         align-items:stretch;
       }
+
       .controls{
         justify-content:center;
       }
-      .handsWrap{
-        gap: 10px;
+
+      .keyboard{
+        width:min(560px, 82%);
       }
+
       .handCard{
-        width: 48%;
-        min-width: 0;
+        min-width:0;
+        width:48%;
       }
+    }
+
+    @media (max-width: 760px){
+      .app{
+        grid-template-rows:
+          auto
+          minmax(0, 1.16fr)
+          minmax(0, 0.66fr)
+          minmax(0, 0.72fr)
+          auto;
+      }
+
       .keyboard{
         width:92%;
+      }
+
+      .handsWrap{
+        gap:8px;
+      }
+
+      .finger{
+        min-width:20px;
+        font-size:11px;
       }
     }
   </style>
@@ -658,7 +659,7 @@
   <div class="app">
     <div class="topbar">
       <div class="titleWrap">
-        <div class="titleBadge">🧸</div>
+        <div class="titleBadge">⌨️</div>
         <div class="titleText">
           <h1>こども英単語タイピング</h1>
           <p>どうぶつ・のりもの・かぐ・せいかつのことば 100ご</p>
@@ -680,12 +681,12 @@
         </div>
 
         <button id="replayBtn" class="alt">🔊 よみなおし</button>
-        <button id="shuffleBtn" class="green">🔀 このグループをシャッフル</button>
+        <button id="shuffleBtn" class="green">🔀 シャッフル</button>
         <button id="restartBtn" class="gray">↺ はじめから</button>
       </div>
     </div>
 
-    <div class="mainCard">
+    <div class="mainCard" id="mainCard">
       <div class="statusRow">
         <div class="pillRow">
           <div class="pill" id="groupInfo">グループ 1 / 10</div>
@@ -694,12 +695,11 @@
         </div>
         <div class="pillRow">
           <div class="pill">スペースキー：よみなおし</div>
-          <div class="pill">Enter：つぎのことば</div>
+          <div class="pill">Enter：つぎへ</div>
         </div>
       </div>
 
-      <div class="illustrationArea">
-        <div class="emoji" id="emoji">🐶</div>
+      <div class="questionArea">
         <div class="word" id="wordDisplay">dog</div>
         <div class="translation" id="translationDisplay">いぬ</div>
       </div>
@@ -707,13 +707,16 @@
       <div class="typingArea">
         <div class="prompt">うえの えいたんご を うって ください</div>
         <div class="typedLine" id="typedLine"></div>
+
         <div class="inputInfo">
           <div class="nextKeyBox">
             <div class="nextKeyLabel">つぎに おすキー</div>
             <div class="nextKey" id="nextKeyBox">D</div>
           </div>
         </div>
+
         <div class="message" id="message">キーを おして スタート</div>
+
         <div class="progressBar">
           <div class="progressInner" id="progressInner"></div>
         </div>
@@ -762,124 +765,124 @@
   <script>
     const groups = [
       [
-        { en:"dog",        ja:"いぬ",           emoji:"🐶" },
-        { en:"cat",        ja:"ねこ",           emoji:"🐱" },
-        { en:"bird",       ja:"とり",           emoji:"🐦" },
-        { en:"fish",       ja:"さかな",         emoji:"🐟" },
-        { en:"rabbit",     ja:"うさぎ",         emoji:"🐰" },
-        { en:"horse",      ja:"うま",           emoji:"🐴" },
-        { en:"cow",        ja:"うし",           emoji:"🐮" },
-        { en:"pig",        ja:"ぶた",           emoji:"🐷" },
-        { en:"duck",       ja:"あひる",         emoji:"🦆" },
-        { en:"frog",       ja:"かえる",         emoji:"🐸" }
+        { en:"dog", ja:"いぬ" },
+        { en:"cat", ja:"ねこ" },
+        { en:"bird", ja:"とり" },
+        { en:"fish", ja:"さかな" },
+        { en:"rabbit", ja:"うさぎ" },
+        { en:"horse", ja:"うま" },
+        { en:"cow", ja:"うし" },
+        { en:"pig", ja:"ぶた" },
+        { en:"duck", ja:"あひる" },
+        { en:"frog", ja:"かえる" }
       ],
       [
-        { en:"lion",       ja:"らいおん",       emoji:"🦁" },
-        { en:"tiger",      ja:"とら",           emoji:"🐯" },
-        { en:"bear",       ja:"くま",           emoji:"🐻" },
-        { en:"monkey",     ja:"さる",           emoji:"🐵" },
-        { en:"elephant",   ja:"ぞう",           emoji:"🐘" },
-        { en:"giraffe",    ja:"きりん",         emoji:"🦒" },
-        { en:"zebra",      ja:"しまうま",       emoji:"🦓" },
-        { en:"panda",      ja:"ぱんだ",         emoji:"🐼" },
-        { en:"koala",      ja:"こあら",         emoji:"🐨" },
-        { en:"sheep",      ja:"ひつじ",         emoji:"🐑" }
+        { en:"lion", ja:"らいおん" },
+        { en:"tiger", ja:"とら" },
+        { en:"bear", ja:"くま" },
+        { en:"monkey", ja:"さる" },
+        { en:"elephant", ja:"ぞう" },
+        { en:"giraffe", ja:"きりん" },
+        { en:"zebra", ja:"しまうま" },
+        { en:"panda", ja:"ぱんだ" },
+        { en:"koala", ja:"こあら" },
+        { en:"sheep", ja:"ひつじ" }
       ],
       [
-        { en:"apple",      ja:"りんご",         emoji:"🍎" },
-        { en:"banana",     ja:"ばなな",         emoji:"🍌" },
-        { en:"orange",     ja:"おれんじ",       emoji:"🍊" },
-        { en:"grape",      ja:"ぶどう",         emoji:"🍇" },
-        { en:"peach",      ja:"もも",           emoji:"🍑" },
-        { en:"melon",      ja:"めろん",         emoji:"🍈" },
-        { en:"lemon",      ja:"れもん",         emoji:"🍋" },
-        { en:"tomato",     ja:"とまと",         emoji:"🍅" },
-        { en:"carrot",     ja:"にんじん",       emoji:"🥕" },
-        { en:"corn",       ja:"とうもろこし",   emoji:"🌽" }
+        { en:"apple", ja:"りんご" },
+        { en:"banana", ja:"ばなな" },
+        { en:"orange", ja:"おれんじ" },
+        { en:"grape", ja:"ぶどう" },
+        { en:"peach", ja:"もも" },
+        { en:"melon", ja:"めろん" },
+        { en:"lemon", ja:"れもん" },
+        { en:"tomato", ja:"とまと" },
+        { en:"carrot", ja:"にんじん" },
+        { en:"corn", ja:"とうもろこし" }
       ],
       [
-        { en:"bread",      ja:"ぱん",           emoji:"🍞" },
-        { en:"milk",       ja:"ぎゅうにゅう",   emoji:"🥛" },
-        { en:"water",      ja:"みず",           emoji:"💧" },
-        { en:"juice",      ja:"じゅーす",       emoji:"🧃" },
-        { en:"rice",       ja:"ごはん",         emoji:"🍚" },
-        { en:"egg",        ja:"たまご",         emoji:"🥚" },
-        { en:"cake",       ja:"けーき",         emoji:"🍰" },
-        { en:"cookie",     ja:"くっきー",       emoji:"🍪" },
-        { en:"candy",      ja:"あめ",           emoji:"🍬" },
-        { en:"icecream",   ja:"あいすくりーむ", emoji:"🍨" }
+        { en:"bread", ja:"ぱん" },
+        { en:"milk", ja:"ぎゅうにゅう" },
+        { en:"water", ja:"みず" },
+        { en:"juice", ja:"じゅーす" },
+        { en:"rice", ja:"ごはん" },
+        { en:"egg", ja:"たまご" },
+        { en:"cake", ja:"けーき" },
+        { en:"cookie", ja:"くっきー" },
+        { en:"candy", ja:"あめ" },
+        { en:"icecream", ja:"あいすくりーむ" }
       ],
       [
-        { en:"table",      ja:"てーぶる",       emoji:"🪵" },
-        { en:"chair",      ja:"いす",           emoji:"🪑" },
-        { en:"bed",        ja:"べっど",         emoji:"🛏️" },
-        { en:"sofa",       ja:"そふぁ",         emoji:"🛋️" },
-        { en:"desk",       ja:"つくえ",         emoji:"🧑‍💼" },
-        { en:"door",       ja:"どあ",           emoji:"🚪" },
-        { en:"window",     ja:"まど",           emoji:"🪟" },
-        { en:"clock",      ja:"とけい",         emoji:"🕒" },
-        { en:"lamp",       ja:"らんぷ",         emoji:"💡" },
-        { en:"mirror",     ja:"かがみ",         emoji:"🪞" }
+        { en:"table", ja:"てーぶる" },
+        { en:"chair", ja:"いす" },
+        { en:"bed", ja:"べっど" },
+        { en:"sofa", ja:"そふぁ" },
+        { en:"desk", ja:"つくえ" },
+        { en:"door", ja:"どあ" },
+        { en:"window", ja:"まど" },
+        { en:"clock", ja:"とけい" },
+        { en:"lamp", ja:"らんぷ" },
+        { en:"mirror", ja:"かがみ" }
       ],
       [
-        { en:"pencil",     ja:"えんぴつ",       emoji:"✏️" },
-        { en:"book",       ja:"ほん",           emoji:"📘" },
-        { en:"bag",        ja:"かばん",         emoji:"🎒" },
-        { en:"ball",       ja:"ぼーる",         emoji:"⚽" },
-        { en:"doll",       ja:"にんぎょう",     emoji:"🪆" },
-        { en:"robot",      ja:"ろぼっと",       emoji:"🤖" },
-        { en:"drum",       ja:"たいこ",         emoji:"🥁" },
-        { en:"train",      ja:"でんしゃ",       emoji:"🚆" },
-        { en:"plane",      ja:"ひこうき",       emoji:"✈️" },
-        { en:"boat",       ja:"ふね",           emoji:"⛵" }
+        { en:"pencil", ja:"えんぴつ" },
+        { en:"book", ja:"ほん" },
+        { en:"bag", ja:"かばん" },
+        { en:"ball", ja:"ぼーる" },
+        { en:"doll", ja:"にんぎょう" },
+        { en:"robot", ja:"ろぼっと" },
+        { en:"drum", ja:"たいこ" },
+        { en:"train", ja:"でんしゃ" },
+        { en:"plane", ja:"ひこうき" },
+        { en:"boat", ja:"ふね" }
       ],
       [
-        { en:"car",        ja:"くるま",         emoji:"🚗" },
-        { en:"bus",        ja:"ばす",           emoji:"🚌" },
-        { en:"bike",       ja:"じてんしゃ",     emoji:"🚲" },
-        { en:"truck",      ja:"とらっく",       emoji:"🚚" },
-        { en:"ship",       ja:"ふね",           emoji:"🚢" },
-        { en:"taxi",       ja:"たくしー",       emoji:"🚕" },
-        { en:"rocket",     ja:"ろけっと",       emoji:"🚀" },
-        { en:"scooter",    ja:"すくーたー",     emoji:"🛴" },
-        { en:"helmet",     ja:"へるめっと",     emoji:"⛑️" },
-        { en:"wheel",      ja:"わ",             emoji:"🛞" }
+        { en:"car", ja:"くるま" },
+        { en:"bus", ja:"ばす" },
+        { en:"bike", ja:"じてんしゃ" },
+        { en:"truck", ja:"とらっく" },
+        { en:"ship", ja:"ふね" },
+        { en:"taxi", ja:"たくしー" },
+        { en:"rocket", ja:"ろけっと" },
+        { en:"scooter", ja:"すくーたー" },
+        { en:"helmet", ja:"へるめっと" },
+        { en:"wheel", ja:"わ" }
       ],
       [
-        { en:"house",      ja:"いえ",           emoji:"🏠" },
-        { en:"school",     ja:"がっこう",       emoji:"🏫" },
-        { en:"park",       ja:"こうえん",       emoji:"🌳" },
-        { en:"store",      ja:"みせ",           emoji:"🏪" },
-        { en:"garden",     ja:"にわ",           emoji:"🌷" },
-        { en:"kitchen",    ja:"きっちん",       emoji:"🍳" },
-        { en:"bath",       ja:"おふろ",         emoji:"🛁" },
-        { en:"toilet",     ja:"といれ",         emoji:"🚽" },
-        { en:"stairs",     ja:"かいだん",       emoji:"🪜" },
-        { en:"room",       ja:"へや",           emoji:"🧸" }
+        { en:"house", ja:"いえ" },
+        { en:"school", ja:"がっこう" },
+        { en:"park", ja:"こうえん" },
+        { en:"store", ja:"みせ" },
+        { en:"garden", ja:"にわ" },
+        { en:"kitchen", ja:"きっちん" },
+        { en:"bath", ja:"おふろ" },
+        { en:"toilet", ja:"といれ" },
+        { en:"stairs", ja:"かいだん" },
+        { en:"room", ja:"へや" }
       ],
       [
-        { en:"sun",        ja:"たいよう",       emoji:"☀️" },
-        { en:"moon",       ja:"つき",           emoji:"🌙" },
-        { en:"star",       ja:"ほし",           emoji:"⭐" },
-        { en:"cloud",      ja:"くも",           emoji:"☁️" },
-        { en:"rain",       ja:"あめ",           emoji:"🌧️" },
-        { en:"snow",       ja:"ゆき",           emoji:"❄️" },
-        { en:"tree",       ja:"き",             emoji:"🌳" },
-        { en:"flower",     ja:"はな",           emoji:"🌸" },
-        { en:"leaf",       ja:"はっぱ",         emoji:"🍃" },
-        { en:"stone",      ja:"いし",           emoji:"🪨" }
+        { en:"sun", ja:"たいよう" },
+        { en:"moon", ja:"つき" },
+        { en:"star", ja:"ほし" },
+        { en:"cloud", ja:"くも" },
+        { en:"rain", ja:"あめ" },
+        { en:"snow", ja:"ゆき" },
+        { en:"tree", ja:"き" },
+        { en:"flower", ja:"はな" },
+        { en:"leaf", ja:"はっぱ" },
+        { en:"stone", ja:"いし" }
       ],
       [
-        { en:"hand",       ja:"て",             emoji:"✋" },
-        { en:"foot",       ja:"あし",           emoji:"🦶" },
-        { en:"eye",        ja:"め",             emoji:"👁️" },
-        { en:"nose",       ja:"はな",           emoji:"👃" },
-        { en:"mouth",      ja:"くち",           emoji:"👄" },
-        { en:"ear",        ja:"みみ",           emoji:"👂" },
-        { en:"hat",        ja:"ぼうし",         emoji:"🧢" },
-        { en:"shirt",      ja:"しゃつ",         emoji:"👕" },
-        { en:"pants",      ja:"ずぼん",         emoji:"👖" },
-        { en:"shoes",      ja:"くつ",           emoji:"👟" }
+        { en:"hand", ja:"て" },
+        { en:"foot", ja:"あし" },
+        { en:"eye", ja:"め" },
+        { en:"nose", ja:"はな" },
+        { en:"mouth", ja:"くち" },
+        { en:"ear", ja:"みみ" },
+        { en:"hat", ja:"ぼうし" },
+        { en:"shirt", ja:"しゃつ" },
+        { en:"pants", ja:"ずぼん" },
+        { en:"shoes", ja:"くつ" }
       ]
     ];
 
@@ -906,7 +909,6 @@
     const shuffleBtn = document.getElementById("shuffleBtn");
     const restartBtn = document.getElementById("restartBtn");
 
-    const emojiEl = document.getElementById("emoji");
     const wordDisplay = document.getElementById("wordDisplay");
     const translationDisplay = document.getElementById("translationDisplay");
     const typedLine = document.getElementById("typedLine");
@@ -919,11 +921,11 @@
     const modeInfo = document.getElementById("modeInfo");
     const footerNote = document.getElementById("footerNote");
     const keyboardEl = document.getElementById("keyboard");
+    const mainCard = document.getElementById("mainCard");
 
     let currentGroupIndex = 0;
     let currentWordIndex = 0;
     let inputIndex = 0;
-    let completedInGroup = 0;
     let groupOrder = groups.map(group => group.map((_, i) => i));
     let audioCtx = null;
 
@@ -1053,7 +1055,9 @@
       document.querySelectorAll(".key.active").forEach(el => {
         el.classList.remove("active","LP","LR","LM","LI","RI","RM","RR","RP");
       });
-      document.querySelectorAll(".finger.active").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".finger.active").forEach(el => {
+        el.classList.remove("active");
+      });
     }
 
     function highlightKeyAndFinger(letter){
@@ -1082,8 +1086,7 @@
       for(let i = 0; i < word.length; i++){
         const span = document.createElement("span");
         span.className = "char";
-        const ch = word[i];
-        span.textContent = ch.toUpperCase();
+        span.textContent = word[i].toUpperCase();
 
         if(i < inputIndex){
           span.classList.add("done");
@@ -1095,23 +1098,7 @@
 
       const next = getNextChar();
       nextKeyBox.textContent = next ? next.toUpperCase() : "✓";
-
-      const progress = (inputIndex / word.length) * 100;
-      progressInner.style.width = `${progress}%`;
-    }
-
-    function renderWord(){
-      const item = getCurrentWord();
-      emojiEl.textContent = item.emoji;
-      wordDisplay.textContent = item.en;
-      translationDisplay.textContent = item.ja;
-      inputIndex = 0;
-      renderTypedLine();
-      updateStatus();
-      highlightKeyAndFinger(getNextChar());
-      messageEl.textContent = "キーを おして スタート";
-      progressInner.style.width = "0%";
-      setTimeout(() => speakCurrentWord(), 180);
+      progressInner.style.width = `${(inputIndex / word.length) * 100}%`;
     }
 
     function updateStatus(){
@@ -1128,9 +1115,21 @@
           : "グループのおわりまで いったら つぎのグループへ じどうで すすみます。";
     }
 
+    function renderWord(){
+      const item = getCurrentWord();
+      wordDisplay.textContent = item.en;
+      translationDisplay.textContent = item.ja;
+      inputIndex = 0;
+      renderTypedLine();
+      updateStatus();
+      highlightKeyAndFinger(getNextChar());
+      messageEl.textContent = "キーを おして スタート";
+      progressInner.style.width = "0%";
+      setTimeout(() => speakCurrentWord(), 180);
+    }
+
     function nextWord(){
       currentWordIndex++;
-      completedInGroup++;
 
       if(currentWordIndex >= 10){
         currentWordIndex = 0;
@@ -1144,8 +1143,13 @@
         }
       }
 
-      updateStatus();
       renderWord();
+    }
+
+    function showShake(){
+      mainCard.classList.remove("shake");
+      void mainCard.offsetWidth;
+      mainCard.classList.add("shake");
     }
 
     function handleCorrectKey(){
@@ -1159,7 +1163,7 @@
       if(inputIndex >= word.length){
         playTone("clear");
         progressInner.style.width = "100%";
-        messageEl.textContent = "せいかい！ Enterで つぎへ";
+        messageEl.textContent = "せいかい！";
         clearHighlights();
         setTimeout(() => {
           nextWord();
@@ -1172,16 +1176,7 @@
     function handleWrongKey(){
       playTone("miss");
       messageEl.textContent = "ちがうキーです";
-      const main = document.querySelector(".mainCard");
-      main.animate(
-        [
-          { transform: "translateX(0px)" },
-          { transform: "translateX(-4px)" },
-          { transform: "translateX(4px)" },
-          { transform: "translateX(0px)" }
-        ],
-        { duration: 120, iterations: 1 }
-      );
+      showShake();
     }
 
     document.addEventListener("keydown", (e) => {
@@ -1205,8 +1200,7 @@
       const expected = getNextChar();
       if(!expected) return;
 
-      const pressed = key.toLowerCase();
-      if(pressed === expected.toLowerCase()){
+      if(key.toLowerCase() === expected.toLowerCase()){
         handleCorrectKey();
       } else {
         handleWrongKey();
@@ -1216,7 +1210,6 @@
     groupSelect.addEventListener("change", () => {
       currentGroupIndex = Number(groupSelect.value);
       currentWordIndex = 0;
-      completedInGroup = 0;
       renderWord();
     });
 
@@ -1232,7 +1225,6 @@
     shuffleBtn.addEventListener("click", () => {
       shuffleCurrentGroup();
       currentWordIndex = 0;
-      completedInGroup = 0;
       renderWord();
       messageEl.textContent = "このグループを シャッフルしました";
     });
@@ -1240,8 +1232,7 @@
     restartBtn.addEventListener("click", () => {
       currentGroupIndex = 0;
       currentWordIndex = 0;
-      completedInGroup = 0;
-      groupSelect.value = 0;
+      groupSelect.value = "0";
       renderWord();
       messageEl.textContent = "はじめから スタート";
     });
@@ -1250,7 +1241,7 @@
       if(audioCtx && audioCtx.state === "suspended"){
         audioCtx.resume();
       }
-    }, { once: false });
+    });
 
     buildGroupSelect();
     buildKeyboard();
