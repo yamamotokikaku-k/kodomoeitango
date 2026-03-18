@@ -7,34 +7,1036 @@
   <style>
     * { box-sizing: border-box; }
 
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    :root{
+      --bg1:#fffaf2;
+      --bg2:#f7fff7;
+      --bg3:#f7fbff;
+      --ink:#25345f;
+      --sub:#6f7ea8;
+      --line:#d7e3fb;
+      --panel:rgba(255,255,255,0.88);
+      --panel-strong:rgba(255,255,255,0.96);
+      --shadow:0 10px 30px rgba(123, 149, 201, 0.12);
+
+      --left-pinky:#ff8fb1;
+      --left-ring:#ffb86b;
+      --left-middle:#ffe073;
+      --left-index:#9fe870;
+      --right-index:#6fdde6;
+      --right-middle:#8fb8ff;
+      --right-ring:#b999ff;
+      --right-pinky:#ff9df0;
+      --thumb:#cfd7e8;
+
+      --key-bg:#f5f8ff;
+      --key-border:#c8d8fb;
+      --key-text:#415786;
+      --active-key-text:#25345f;
+      --ok:#55b97a;
+      --ng:#ff7f96;
     }
 
-    :root{
-      --bg1:#f9fbff;
-      --bg2:#fff8ef;
-      --bg3:#f7fff4;
-      --panel:#ffffffee;
-      --line:#d7e3f5;
-      --text:#20304a;
-      --sub:#5f7191;
-      --typed:#5f8cff;
-      --done:#7f8da8;
-      --miss:#ff6f7d;
-      --key:#eef4ff;
-      --shadow:0 6px 18px rgba(84,115,180,0.10);
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #fff3c9 0%, transparent 28%),
+        radial-gradient(circle at top right, #ffd7ec 0%, transparent 24%),
+        radial-gradient(circle at bottom left, #dfffe5 0%, transparent 30%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 48%, var(--bg3));
+    }
 
-      --finger-lp:#ff9aa2;
-      --finger-lr:#ffb86b;
-      --finger-lm:#ffe27a;
-      --finger-li:#8ee3a3;
-      --finger-ri:#7ed6ff;
-      --finger-rm:#9eb7ff;
+    body {
+      min-height: 100vh;
+      padding: 14px;
+    }
+
+    .app {
+      width: min(1380px, 100%);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .topbar,
+    .panel {
+      background: var(--panel);
+      border: 2px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 260px;
+    }
+
+    .brand-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      background: linear-gradient(135deg, #fef3bf, #dff5ff 55%, #e8ddff);
+      border: 2px solid var(--line);
+      flex: 0 0 auto;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--sub);
+      font-weight: 700;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .field,
+    .btn {
+      height: 50px;
+      border-radius: 16px;
+      border: 2px solid var(--line);
+      background: var(--panel-strong);
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 0 4px 0 rgba(170, 187, 224, 0.28);
+    }
+
+    .field {
+      padding: 0 14px;
+      min-width: 190px;
+    }
+
+    .btn {
+      padding: 0 16px;
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+    }
+
+    .btn:hover { filter: brightness(1.02); }
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 rgba(170, 187, 224, 0.28);
+    }
+
+    .btn-read { background: linear-gradient(135deg, #ffdbe6, #ffc8da); }
+    .btn-shuffle { background: linear-gradient(135deg, #d9fff0, #bff5ef); }
+    .btn-reset { background: linear-gradient(135deg, #ebe5ff, #dfe7ff); }
+
+    .stage {
+      padding: 14px;
+    }
+
+    .chips {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .chip-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 900;
+      background: #eef3ff;
+      border: 2px solid var(--line);
+      color: #536a9b;
+    }
+
+    .hero {
+      background: rgba(250, 252, 255, 0.92);
+      border: 2px solid var(--line);
+      border-radius: 24px;
+      padding: 18px 18px 10px;
+      text-align: center;
+      min-height: 300px;
+    }
+
+    .word {
+      margin: 0;
+      font-size: clamp(56px, 9vw, 88px);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      font-weight: 1000;
+      color: #22345e;
+    }
+
+    .meaning {
+      margin-top: 6px;
+      font-size: clamp(26px, 3.4vw, 40px);
+      color: #ff8fb1;
+      font-weight: 1000;
+      line-height: 1.1;
+    }
+
+    .typing-box {
+      margin-top: 14px;
+      min-height: 150px;
+      border-radius: 22px;
+      border: 2px solid var(--line);
+      background: linear-gradient(180deg, #f8fbff, #fdfefe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    .typing-line {
+      font-size: clamp(48px, 7vw, 74px);
+      font-weight: 1000;
+      letter-spacing: 0.08em;
+      user-select: none;
+      white-space: nowrap;
+      line-height: 1.1;
+    }
+
+    .typing-line .done {
+      color: #a5b2d3;
+    }
+
+    .typing-line .current {
+      display: inline-block;
+      transform: scale(1.04);
+    }
+
+    .typing-line .rest {
+      color: #8f9cbf;
+    }
+
+    .typing-box.ready .typing-line {
+      opacity: 0.98;
+    }
+
+    .keyboard-panel {
+      padding: 10px 14px 14px;
+    }
+
+    .keyboard-frame {
+      background: rgba(255,255,255,0.9);
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      padding: 18px 10px 14px;
+      overflow-x: auto;
+      overflow-y: visible;
+    }
+
+    .keyboard {
+      width: max-content;
+      margin: 0 auto;
+      display: grid;
+      gap: 7px;
+      padding-bottom: 2px;
+    }
+
+    .key-row {
+      display: flex;
+      gap: 7px;
+      justify-content: center;
+    }
+
+    .key {
+      width: 60px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--key-bg);
+      border: 2px solid var(--key-border);
+      display: grid;
+      place-items: center;
+      font-weight: 1000;
+      font-size: 18px;
+      color: var(--key-text);
+      box-shadow: 0 4px 0 rgba(173, 191, 231, 0.35);
+      transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease;
+      flex: 0 0 auto;
+    }
+
+    .key.active {
+      transform: translateY(2px);
+      color: var(--active-key-text);
+      box-shadow: 0 2px 0 rgba(173, 191, 231, 0.35);
+    }
+
+    .hands-panel {
+      padding: 12px 14px;
+    }
+
+    .hands {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .hand-card {
+      background: rgba(255,255,255,0.85);
+      border: 2px solid var(--line);
+      border-radius: 24px;
+      padding: 16px 12px 12px;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .finger-wrap {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 10px;
+      height: 180px;
+    }
+
+    .finger {
+      width: 54px;
+      border-radius: 24px 24px 16px 16px;
+      border: 4px solid #eab873;
+      background: linear-gradient(180deg, #ffe2bf, #ffd29f);
+      box-shadow:
+        inset 0 -4px 0 rgba(255,255,255,0.28),
+        0 6px 0 rgba(234, 184, 115, 0.25);
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 12px;
+      color: #7f4d08;
+      font-weight: 1000;
+      font-size: 16px;
+      transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      flex: 0 0 auto;
+    }
+
+    .finger::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.28);
+    }
+
+    .f-pinky { height: 150px; }
+    .f-ring { height: 176px; }
+    .f-middle { height: 196px; }
+    .f-index { height: 168px; }
+
+    .thumb {
+      width: 70px;
+      height: 90px;
+      border-radius: 22px;
+      transform: rotate(-18deg);
+      margin: 0 0 6px 4px;
+      padding-top: 16px;
+    }
+
+    .right-thumb {
+      transform: rotate(18deg);
+      margin: 0 4px 6px 0;
+    }
+
+    .finger.active {
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 0 6px rgba(255,255,255,0.9),
+        0 0 0 10px rgba(255,255,255,0.55),
+        0 10px 20px rgba(0,0,0,0.08);
+      filter: saturate(1.08) brightness(1.03);
+    }
+
+    .shake {
+      animation: shake 0.22s linear;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-9px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-7px); }
+      80% { transform: translateX(6px); }
+      100% { transform: translateX(0); }
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--sub);
+      font-size: 14px;
+      font-weight: 900;
+      padding-bottom: 4px;
+    }
+
+    @media (max-width: 1100px) {
+      .hands {
+        grid-template-columns: 1fr;
+      }
+      .hand-card {
+        min-height: 200px;
+      }
+    }
+
+    @media (max-width: 840px) {
+      body { padding: 10px; }
+      .topbar, .panel { border-radius: 20px; }
+      .hero { min-height: 260px; }
+      .key {
+        width: 52px;
+        height: 48px;
+        font-size: 17px;
+      }
+      .field { min-width: 160px; }
+    }
+
+    @media (max-width: 560px) {
+      .controls {
+        justify-content: stretch;
+      }
+      .field, .btn {
+        width: 100%;
+      }
+      .key {
+        width: 46px;
+        height: 44px;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+      .finger-wrap {
+        transform: scale(0.9);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-icon">⌨️</div>
+        <div>
+          <h1>こども英単語タイピング</h1>
+          <p>どうぶつ・のりもの・かぐ・せいかつのことば 100こ</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <select id="groupSelect" class="field" aria-label="グループ選択"></select>
+        <select id="modeSelect" class="field" aria-label="モード選択">
+          <option value="repeat">このグループをくりかえす</option>
+          <option value="next">このグループがおわったらつぎへ</option>
+        </select>
+        <button id="readBtn" class="btn btn-read">📣 よみなおし</button>
+        <button id="shuffleBtn" class="btn btn-shuffle">🔀 シャッフル</button>
+        <button id="resetBtn" class="btn btn-reset">↺ はじめから</button>
+      </div>
+    </div>
+
+    <section class="panel stage">
+      <div class="chips">
+        <div class="chip-wrap">
+          <div id="groupInfo" class="chip">グループ 1 / 10</div>
+          <div id="questionInfo" class="chip">もんだい 1 / 10</div>
+          <div id="modeInfo" class="chip">このグループをくりかえす</div>
+        </div>
+        <div class="chip-wrap">
+          <div class="chip">スペースキー：よみなおし</div>
+          <div class="chip">Enter：つぎへ</div>
+        </div>
+      </div>
+
+      <div id="hero" class="hero">
+        <h2 id="wordText" class="word">dog</h2>
+        <div id="meaningText" class="meaning">いぬ</div>
+
+        <div id="typingBox" class="typing-box ready">
+          <div id="typingLine" class="typing-line" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel keyboard-panel">
+      <div class="keyboard-frame">
+        <div class="keyboard" id="keyboard">
+          <div class="key-row">
+            <div class="key" data-key="Q">Q</div>
+            <div class="key" data-key="W">W</div>
+            <div class="key" data-key="E">E</div>
+            <div class="key" data-key="R">R</div>
+            <div class="key" data-key="T">T</div>
+            <div class="key" data-key="Y">Y</div>
+            <div class="key" data-key="U">U</div>
+            <div class="key" data-key="I">I</div>
+            <div class="key" data-key="O">O</div>
+            <div class="key" data-key="P">P</div>
+          </div>
+          <div class="key-row">
+            <div class="key" data-key="A">A</div>
+            <div class="key" data-key="S">S</div>
+            <div class="key" data-key="D">D</div>
+            <div class="key" data-key="F">F</div>
+            <div class="key" data-key="G">G</div>
+            <div class="key" data-key="H">H</div>
+            <div class="key" data-key="J">J</div>
+            <div class="key" data-key="K">K</div>
+            <div class="key" data-key="L">L</div>
+          </div>
+          <div class="key-row">
+            <div class="key" data-key="Z">Z</div>
+            <div class="key" data-key="X">X</div>
+            <div class="key" data-key="C">C</div>
+            <div class="key" data-key="V">V</div>
+            <div class="key" data-key="B">B</div>
+            <div class="key" data-key="N">N</div>
+            <div class="key" data-key="M">M</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel hands-panel">
+      <div class="hands">
+        <div class="hand-card">
+          <div class="finger-wrap">
+            <div class="finger f-pinky" data-finger="LP">こ</div>
+            <div class="finger f-ring" data-finger="LR">く</div>
+            <div class="finger f-middle" data-finger="LM">な</div>
+            <div class="finger f-index" data-finger="LI">ひ</div>
+            <div class="finger thumb" data-finger="LT">お</div>
+          </div>
+        </div>
+
+        <div class="hand-card">
+          <div class="finger-wrap">
+            <div class="finger thumb right-thumb" data-finger="RT">お</div>
+            <div class="finger f-index" data-finger="RI">ひ</div>
+            <div class="finger f-middle" data-finger="RM">な</div>
+            <div class="finger f-ring" data-finger="RR">く</div>
+            <div class="finger f-pinky" data-finger="RP">こ</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">グループのおわりまでいったら このグループを もういちど れんしゅうします。</div>
+  </div>
+
+  <script>
+    const WORD_GROUPS = [
+      [
+        { en: "dog", ja: "いぬ" },
+        { en: "cat", ja: "ねこ" },
+        { en: "bird", ja: "とり" },
+        { en: "fish", ja: "さかな" },
+        { en: "duck", ja: "あひる" },
+        { en: "frog", ja: "かえる" },
+        { en: "bear", ja: "くま" },
+        { en: "lion", ja: "らいおん" },
+        { en: "tiger", ja: "とら" },
+        { en: "rabbit", ja: "うさぎ" }
+      ],
+      [
+        { en: "horse", ja: "うま" },
+        { en: "monkey", ja: "さる" },
+        { en: "sheep", ja: "ひつじ" },
+        { en: "mouse", ja: "ねずみ" },
+        { en: "pig", ja: "ぶた" },
+        { en: "cow", ja: "うし" },
+        { en: "goat", ja: "やぎ" },
+        { en: "deer", ja: "しか" },
+        { en: "fox", ja: "きつね" },
+        { en: "wolf", ja: "おおかみ" }
+      ],
+      [
+        { en: "car", ja: "くるま" },
+        { en: "bus", ja: "ばす" },
+        { en: "train", ja: "でんしゃ" },
+        { en: "bike", ja: "じてんしゃ" },
+        { en: "ship", ja: "ふね" },
+        { en: "boat", ja: "ぼーと" },
+        { en: "plane", ja: "ひこうき" },
+        { en: "truck", ja: "とらっく" },
+        { en: "taxi", ja: "たくしー" },
+        { en: "van", ja: "ばん" }
+      ],
+      [
+        { en: "desk", ja: "つくえ" },
+        { en: "chair", ja: "いす" },
+        { en: "table", ja: "てーぶる" },
+        { en: "bed", ja: "べっど" },
+        { en: "sofa", ja: "そふぁ" },
+        { en: "lamp", ja: "らんぷ" },
+        { en: "clock", ja: "とけい" },
+        { en: "door", ja: "どあ" },
+        { en: "window", ja: "まど" },
+        { en: "shelf", ja: "たな" }
+      ],
+      [
+        { en: "book", ja: "ほん" },
+        { en: "pen", ja: "ぺん" },
+        { en: "pencil", ja: "えんぴつ" },
+        { en: "eraser", ja: "けしごむ" },
+        { en: "ruler", ja: "ものさし" },
+        { en: "bag", ja: "かばん" },
+        { en: "box", ja: "はこ" },
+        { en: "cup", ja: "こっぷ" },
+        { en: "plate", ja: "さら" },
+        { en: "spoon", ja: "すぷーん" }
+      ],
+      [
+        { en: "fork", ja: "ふぉーく" },
+        { en: "knife", ja: "ないふ" },
+        { en: "apple", ja: "りんご" },
+        { en: "grape", ja: "ぶどう" },
+        { en: "melon", ja: "めろん" },
+        { en: "peach", ja: "もも" },
+        { en: "bread", ja: "ぱん" },
+        { en: "rice", ja: "ごはん" },
+        { en: "milk", ja: "ぎゅうにゅう" },
+        { en: "water", ja: "みず" }
+      ],
+      [
+        { en: "juice", ja: "じゅーす" },
+        { en: "soup", ja: "すーぷ" },
+        { en: "cake", ja: "けーき" },
+        { en: "cookie", ja: "くっきー" },
+        { en: "candy", ja: "きゃんでぃ" },
+        { en: "ball", ja: "ぼーる" },
+        { en: "kite", ja: "たこ" },
+        { en: "drum", ja: "たいこ" },
+        { en: "piano", ja: "ぴあの" },
+        { en: "robot", ja: "ろぼっと" }
+      ],
+      [
+        { en: "star", ja: "ほし" },
+        { en: "moon", ja: "つき" },
+        { en: "sun", ja: "たいよう" },
+        { en: "rain", ja: "あめ" },
+        { en: "cloud", ja: "くも" },
+        { en: "snow", ja: "ゆき" },
+        { en: "wind", ja: "かぜ" },
+        { en: "tree", ja: "き" },
+        { en: "flower", ja: "はな" },
+        { en: "leaf", ja: "はっぱ" }
+      ],
+      [
+        { en: "grass", ja: "くさ" },
+        { en: "stone", ja: "いし" },
+        { en: "river", ja: "かわ" },
+        { en: "beach", ja: "はまべ" },
+        { en: "park", ja: "こうえん" },
+        { en: "house", ja: "いえ" },
+        { en: "room", ja: "へや" },
+        { en: "roof", ja: "やね" },
+        { en: "garden", ja: "にわ" },
+        { en: "road", ja: "みち" }
+      ],
+      [
+        { en: "king", ja: "おうさま" },
+        { en: "queen", ja: "おうじょ" },
+        { en: "baby", ja: "あかちゃん" },
+        { en: "family", ja: "かぞく" },
+        { en: "friend", ja: "ともだち" },
+        { en: "teacher", ja: "せんせい" },
+        { en: "school", ja: "がっこう" },
+        { en: "music", ja: "おんがく" },
+        { en: "color", ja: "いろ" },
+        { en: "happy", ja: "うれしい" }
+      ]
+    ];
+
+    const FINGER_MAP = {
+      Q: "LP", A: "LP", Z: "LP",
+      W: "LR", S: "LR", X: "LR",
+      E: "LM", D: "LM", C: "LM",
+      R: "LI", F: "LI", V: "LI", T: "LI", G: "LI", B: "LI",
+      Y: "RI", H: "RI", N: "RI", U: "RI", J: "RI", M: "RI",
+      I: "RM", K: "RM",
+      O: "RR", L: "RR",
+      P: "RP"
+    };
+
+    const FINGER_COLOR = {
+      LP: getCSS("--left-pinky"),
+      LR: getCSS("--left-ring"),
+      LM: getCSS("--left-middle"),
+      LI: getCSS("--left-index"),
+      RI: getCSS("--right-index"),
+      RM: getCSS("--right-middle"),
+      RR: getCSS("--right-ring"),
+      RP: getCSS("--right-pinky"),
+      LT: getCSS("--thumb"),
+      RT: getCSS("--thumb")
+    };
+
+    const groupSelect = document.getElementById("groupSelect");
+    const modeSelect = document.getElementById("modeSelect");
+    const readBtn = document.getElementById("readBtn");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const groupInfo = document.getElementById("groupInfo");
+    const questionInfo = document.getElementById("questionInfo");
+    const modeInfo = document.getElementById("modeInfo");
+
+    const wordText = document.getElementById("wordText");
+    const meaningText = document.getElementById("meaningText");
+    const typingLine = document.getElementById("typingLine");
+    const typingBox = document.getElementById("typingBox");
+    const hero = document.getElementById("hero");
+
+    const keyEls = [...document.querySelectorAll(".key")];
+    const fingerEls = [...document.querySelectorAll(".finger")];
+
+    let groupIndex = 0;
+    let questionIndex = 0;
+    let typedIndex = 0;
+    let groups = WORD_GROUPS.map(group => [...group]);
+    let utterance = null;
+    let audioCtx = null;
+
+    function getCSS(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function initGroupSelect() {
+      groupSelect.innerHTML = "";
+      groups.forEach((_, i) => {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = `グループ ${i + 1}`;
+        groupSelect.appendChild(option);
+      });
+    }
+
+    function currentWord() {
+      return groups[groupIndex][questionIndex];
+    }
+
+    function normalizeInputKey(key) {
+      if (!key || key.length !== 1) return "";
+      const upper = key.toUpperCase();
+      if (upper >= "A" && upper <= "Z") return upper;
+      return "";
+    }
+
+    function getCurrentLetter() {
+      const word = currentWord().en.toUpperCase();
+      return word[typedIndex] || "";
+    }
+
+    function getCurrentFinger() {
+      const letter = getCurrentLetter();
+      return FINGER_MAP[letter] || null;
+    }
+
+    function renderTypingLine() {
+      const word = currentWord().en.toUpperCase();
+      const done = word.slice(0, typedIndex);
+      const current = word[typedIndex] || "";
+      const rest = word.slice(typedIndex + 1);
+      const finger = getCurrentFinger();
+      const activeColor = finger ? FINGER_COLOR[finger] : "#8f9cbf";
+
+      typingLine.innerHTML = `
+        <span class="done">${escapeHTML(done)}</span><span class="current" style="color:${activeColor};">${escapeHTML(current)}</span><span class="rest">${escapeHTML(rest)}</span>
+      `;
+    }
+
+    function renderWordInfo() {
+      const item = currentWord();
+      wordText.textContent = item.en.toLowerCase();
+      meaningText.textContent = item.ja;
+      renderTypingLine();
+      updateHighlights();
+      updateInfo();
+    }
+
+    function updateInfo() {
+      groupInfo.textContent = `グループ ${groupIndex + 1} / ${groups.length}`;
+      questionInfo.textContent = `もんだい ${questionIndex + 1} / ${groups[groupIndex].length}`;
+      modeInfo.textContent = modeSelect.value === "repeat"
+        ? "このグループをくりかえす"
+        : "このグループがおわったらつぎへ";
+    }
+
+    function clearHighlights() {
+      keyEls.forEach(el => {
+        el.classList.remove("active");
+        el.style.background = "";
+        el.style.borderColor = "";
+      });
+      fingerEls.forEach(el => {
+        el.classList.remove("active");
+        el.style.background = "";
+        el.style.borderColor = "";
+      });
+    }
+
+    function updateHighlights() {
+      clearHighlights();
+
+      const letter = getCurrentLetter();
+      const finger = getCurrentFinger();
+      const color = finger ? FINGER_COLOR[finger] : "";
+
+      if (letter) {
+        const keyEl = keyEls.find(el => el.dataset.key === letter);
+        if (keyEl) {
+          keyEl.classList.add("active");
+          keyEl.style.background = color ? color : "";
+          keyEl.style.borderColor = color ? color : "";
+        }
+      }
+
+      if (finger) {
+        const fingerEl = fingerEls.find(el => el.dataset.finger === finger);
+        if (fingerEl) {
+          fingerEl.classList.add("active");
+          fingerEl.style.background = color ? `linear-gradient(180deg, ${lighten(color, 16)}, ${color})` : "";
+          fingerEl.style.borderColor = darken(color, 16);
+        }
+      }
+    }
+
+    function nextQuestion(auto = false) {
+      typedIndex = 0;
+      questionIndex += 1;
+
+      if (questionIndex >= groups[groupIndex].length) {
+        if (modeSelect.value === "next") {
+          groupIndex = (groupIndex + 1) % groups.length;
+        }
+        questionIndex = 0;
+      }
+
+      groupSelect.value = String(groupIndex);
+      renderWordInfo();
+
+      if (auto) speakCurrentWord();
+    }
+
+    function resetCurrentGroup() {
+      typedIndex = 0;
+      questionIndex = 0;
+      renderWordInfo();
+    }
+
+    function shuffleCurrentGroup() {
+      const current = groups[groupIndex];
+      for (let i = current.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [current[i], current[j]] = [current[j], current[i]];
+      }
+      questionIndex = 0;
+      typedIndex = 0;
+      renderWordInfo();
+    }
+
+    function resetAll() {
+      groups = WORD_GROUPS.map(group => [...group]);
+      groupIndex = 0;
+      questionIndex = 0;
+      typedIndex = 0;
+      groupSelect.value = "0";
+      renderWordInfo();
+    }
+
+    function handleCorrectInput() {
+      playTypeSound();
+      typedIndex += 1;
+      renderTypingLine();
+      updateHighlights();
+
+      if (typedIndex >= currentWord().en.length) {
+        setTimeout(() => nextQuestion(false), 180);
+      }
+    }
+
+    function handleWrongInput() {
+      playMissSound();
+      hero.classList.remove("shake");
+      void hero.offsetWidth;
+      hero.classList.add("shake");
+    }
+
+    function speakCurrentWord() {
+      if (!("speechSynthesis" in window)) return;
+      const item = currentWord();
+
+      window.speechSynthesis.cancel();
+      utterance = new SpeechSynthesisUtterance(item.en);
+      utterance.lang = "en-US";
+      utterance.rate = 0.82;
+      utterance.pitch = 1.05;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function ensureAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq, duration, type, gainValue) {
+      ensureAudio();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(gainValue, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + duration + 0.02);
+    }
+
+    function playTypeSound() {
+      playTone(880, 0.05, "square", 0.03);
+      setTimeout(() => playTone(1320, 0.04, "square", 0.02), 14);
+    }
+
+    function playMissSound() {
+      playTone(200, 0.08, "sawtooth", 0.03);
+      setTimeout(() => playTone(150, 0.09, "triangle", 0.025), 18);
+    }
+
+    function escapeHTML(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function hexToRgb(hex) {
+      const clean = hex.replace("#", "").trim();
+      const full = clean.length === 3
+        ? clean.split("").map(c => c + c).join("")
+        : clean;
+      const num = parseInt(full, 16);
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    }
+
+    function clamp(num, min, max) {
+      return Math.min(max, Math.max(min, num));
+    }
+
+    function lighten(hex, amount) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgb(${clamp(r + amount, 0, 255)}, ${clamp(g + amount, 0, 255)}, ${clamp(b + amount, 0, 255)})`;
+    }
+
+    function darken(hex, amount) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgb(${clamp(r - amount, 0, 255)}, ${clamp(g - amount, 0, 255)}, ${clamp(b - amount, 0, 255)})`;
+    }
+
+    groupSelect.addEventListener("change", () => {
+      groupIndex = Number(groupSelect.value);
+      questionIndex = 0;
+      typedIndex = 0;
+      renderWordInfo();
+    });
+
+    modeSelect.addEventListener("change", () => {
+      updateInfo();
+    });
+
+    readBtn.addEventListener("click", speakCurrentWord);
+    shuffleBtn.addEventListener("click", shuffleCurrentGroup);
+    resetBtn.addEventListener("click", resetAll);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.repeat) return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        speakCurrentWord();
+        return;
+      }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        nextQuestion(false);
+        return;
+      }
+
+      const input = normalizeInputKey(e.key);
+      if (!input) return;
+
+      const expected = getCurrentLetter();
+      if (!expected) return;
+
+      if (input === expected) {
+        handleCorrectInput();
+      } else {
+        handleWrongInput();
+      }
+    });
+
+    initGroupSelect();
+    groupSelect.value = "0";
+    renderWordInfo();
+
+    setTimeout(() => {
+      if ("speechSynthesis" in window) {
+        speakCurrentWord();
+      }
+    }, 250);
+  </script>
+</body>
+</html>      --finger-rm:#9eb7ff;
       --finger-rr:#c7a6ff;
       --finger-rp:#ff9fe0;
     }
