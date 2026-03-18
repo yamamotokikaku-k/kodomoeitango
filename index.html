@@ -172,7 +172,6 @@
       box-shadow: 0 3px 8px rgba(95,140,255,0.22);
     }
 
-    button.default { background: linear-gradient(135deg, #7da4ff, #94b8ff); }
     button.alt { background: linear-gradient(135deg, #ff9fc6, #ffb86f); }
     button.green { background: linear-gradient(135deg, #63d6a0, #84e2c0); }
     button.gray { background: linear-gradient(135deg, #a3b2c9, #bcc8d9); }
@@ -221,7 +220,7 @@
     }
 
     .word {
-      font-size: clamp(54px, 8.6vh, 108px);
+      font-size: clamp(34px, 5.2vh, 64px);
       line-height: 1.02;
       font-weight: 900;
       letter-spacing: 0.08em;
@@ -229,6 +228,13 @@
       text-align: center;
       word-break: break-word;
       max-width: 100%;
+      min-height: 1.2em;
+    }
+
+    .word.hiddenWord {
+      color: transparent;
+      text-shadow: none;
+      user-select: none;
     }
 
     .translation {
@@ -258,6 +264,27 @@
 
     .char.rest {
       color: #22345e;
+    }
+
+    .word.hiddenWord .char,
+    .word.hiddenWord .char.done,
+    .word.hiddenWord .char.current,
+    .word.hiddenWord .char.rest {
+      color: transparent !important;
+      text-shadow: none !important;
+    }
+
+    .hiddenHint {
+      display: none;
+      font-size: clamp(14px, 1.9vh, 20px);
+      font-weight: 800;
+      color: var(--sub);
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    .hiddenMode .hiddenHint {
+      display: block;
     }
 
     .sectionCard {
@@ -428,54 +455,34 @@
     }
 
     @media (max-width: 1180px) {
-      .topbar {
-        padding: 8px 10px;
-      }
-      .controlBox label {
-        display: none;
-      }
-      .controls {
-        gap: 6px;
-      }
-      select {
-        min-width: 90px;
-      }
+      .topbar { padding: 8px 10px; }
+      .controlBox label { display: none; }
+      .controls { gap: 6px; }
+      select { min-width: 90px; }
     }
 
     @media (max-width: 920px) {
       .app {
         grid-template-rows: auto minmax(0, 1fr) minmax(0, 0.72fr) minmax(0, 0.9fr);
       }
-      .handsWrap {
-        gap: 8px;
-      }
-      .fingerWrap {
-        transform: scale(0.9);
-      }
-      .brand p {
-        display: none;
-      }
+      .handsWrap { gap: 8px; }
+      .fingerWrap { transform: scale(0.9); }
+      .brand p { display: none; }
     }
 
     @media (max-width: 760px) {
-      body {
-        padding: 6px;
-      }
+      body { padding: 6px; }
       .app {
         height: calc(100vh - 12px);
         gap: 6px;
       }
-      .topbar, .panel {
-        border-radius: 18px;
-      }
+      .topbar, .panel { border-radius: 18px; }
       .topbar {
         flex-direction: column;
         align-items: stretch;
         min-height: 0;
       }
-      .brand {
-        width: 100%;
-      }
+      .brand { width: 100%; }
       .controls {
         width: 100%;
         justify-content: space-between;
@@ -484,36 +491,18 @@
         flex: 1 1 auto;
         min-width: 0;
       }
-      select, button {
-        width: 100%;
-      }
-      .handsWrap {
-        grid-template-columns: 1fr 1fr;
-      }
-      .fingerWrap {
-        transform: scale(0.78);
-      }
-      .sectionTitle {
-        font-size: 12px;
-      }
+      select, button { width: 100%; }
+      .handsWrap { grid-template-columns: 1fr 1fr; }
+      .fingerWrap { transform: scale(0.78); }
+      .sectionTitle { font-size: 12px; }
     }
 
     @media (max-width: 560px) {
-      .controls {
-        flex-wrap: wrap;
-      }
-      .controlBox {
-        flex: 1 1 48%;
-      }
-      .handsWrap {
-        gap: 6px;
-      }
-      .fingerWrap {
-        transform: scale(0.68);
-      }
-      .word {
-        letter-spacing: 0.04em;
-      }
+      .controls { flex-wrap: wrap; }
+      .controlBox { flex: 1 1 48%; }
+      .handsWrap { gap: 6px; }
+      .fingerWrap { transform: scale(0.68); }
+      .word { letter-spacing: 0.04em; }
     }
   </style>
 </head>
@@ -535,10 +524,18 @@
         </div>
 
         <div class="controlBox">
-          <label for="modeSelect">モード</label>
+          <label for="modeSelect">進み方</label>
           <select id="modeSelect">
             <option value="repeat">このグループをくりかえす</option>
             <option value="next">つぎのグループへ</option>
+          </select>
+        </div>
+
+        <div class="controlBox">
+          <label for="displayModeSelect">表示</label>
+          <select id="displayModeSelect">
+            <option value="normal">ふつう</option>
+            <option value="listen">きいてうつ</option>
           </select>
         </div>
 
@@ -560,8 +557,9 @@
         </div>
       </div>
 
-      <div class="questionArea">
+      <div id="questionArea" class="questionArea">
         <div id="wordText" class="word"></div>
+        <div id="hiddenHint" class="hiddenHint">えいごは かくれています</div>
         <div id="meaningText" class="translation"></div>
       </div>
     </section>
@@ -785,6 +783,7 @@
 
     const groupSelect = document.getElementById("groupSelect");
     const modeSelect = document.getElementById("modeSelect");
+    const displayModeSelect = document.getElementById("displayModeSelect");
     const readBtn = document.getElementById("readBtn");
     const shuffleBtn = document.getElementById("shuffleBtn");
     const resetBtn = document.getElementById("resetBtn");
@@ -794,6 +793,7 @@
     const wordText = document.getElementById("wordText");
     const meaningText = document.getElementById("meaningText");
     const mainCard = document.getElementById("mainCard");
+    const questionArea = document.getElementById("questionArea");
 
     const keyEls = [...document.querySelectorAll(".key")];
     const fingerEls = [...document.querySelectorAll(".finger")];
@@ -836,6 +836,10 @@
       return FINGER_MAP[letter] || null;
     }
 
+    function isListenMode() {
+      return displayModeSelect.value === "listen";
+    }
+
     function renderWord() {
       const word = currentWord().en.toUpperCase();
       const done = word.slice(0, typedIndex);
@@ -847,6 +851,14 @@
       wordText.innerHTML = `
         <span class="char done">${escapeHTML(done)}</span><span class="char current" style="color:${activeColor};">${escapeHTML(current)}</span><span class="char rest">${escapeHTML(rest)}</span>
       `;
+
+      if (isListenMode()) {
+        wordText.classList.add("hiddenWord");
+        questionArea.classList.add("hiddenMode");
+      } else {
+        wordText.classList.remove("hiddenWord");
+        questionArea.classList.remove("hiddenMode");
+      }
     }
 
     function renderWordInfo() {
@@ -901,7 +913,7 @@
       }
     }
 
-    function nextQuestion() {
+    function nextQuestion(autoSpeak = true) {
       typedIndex = 0;
       questionIndex += 1;
 
@@ -914,6 +926,10 @@
 
       groupSelect.value = String(groupIndex);
       renderWordInfo();
+
+      if (autoSpeak && isListenMode()) {
+        setTimeout(() => speakCurrentWord(), 120);
+      }
     }
 
     function shuffleCurrentGroup() {
@@ -925,6 +941,10 @@
       questionIndex = 0;
       typedIndex = 0;
       renderWordInfo();
+
+      if (isListenMode()) {
+        setTimeout(() => speakCurrentWord(), 120);
+      }
     }
 
     function resetAll() {
@@ -934,6 +954,10 @@
       typedIndex = 0;
       groupSelect.value = "0";
       renderWordInfo();
+
+      if (isListenMode()) {
+        setTimeout(() => speakCurrentWord(), 120);
+      }
     }
 
     function handleCorrectInput() {
@@ -943,7 +967,7 @@
       updateHighlights();
 
       if (typedIndex >= currentWord().en.length) {
-        setTimeout(() => nextQuestion(), 170);
+        setTimeout(() => nextQuestion(true), 170);
       }
     }
 
@@ -1046,6 +1070,18 @@
       questionIndex = 0;
       typedIndex = 0;
       renderWordInfo();
+
+      if (isListenMode()) {
+        setTimeout(() => speakCurrentWord(), 120);
+      }
+    });
+
+    displayModeSelect.addEventListener("change", () => {
+      renderWordInfo();
+
+      if (isListenMode()) {
+        setTimeout(() => speakCurrentWord(), 120);
+      }
     });
 
     readBtn.addEventListener("click", speakCurrentWord);
@@ -1063,7 +1099,7 @@
 
       if (e.key === "Enter") {
         e.preventDefault();
-        nextQuestion();
+        nextQuestion(true);
         return;
       }
 
